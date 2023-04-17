@@ -141,7 +141,7 @@ const template =
         "type": "text",
         "position": {
           "x": 131,
-          "y": 70
+          "y": 76
         },
         "width": 65,
         "height": 6,
