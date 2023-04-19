@@ -12,6 +12,7 @@ async function getPrestations() {
     element.total = 0
   });
   prestations.value = data
+  console.log(prestations.value)
 }
 
 let totalRow = function (a) {

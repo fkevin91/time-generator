@@ -6,7 +6,7 @@ const devis = ref([])
 
 
 async function getDevis() {
-  const { data } = await supabase.from('devis').select('*')
+  const { data } = await supabase.from('devis').select('*').eq('owner', user.value.id)
   devis.value = data
 }
 

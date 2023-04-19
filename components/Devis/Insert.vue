@@ -3,6 +3,7 @@ import { BLANK_PDF, generate } from '@pdfme/generator';
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 
+let inputs
 const title = ref('')
 const description = ref('')
 const numberDevis = ref('')
@@ -14,6 +15,7 @@ const tel_client = ref('')
 const mail_client = ref('')
 const prestations_devis = ref('')
 const total_ttc = ref('')
+const warn = ref('')
 const text_loi = ref('La loi n°92/1442 du 31 décembre 1992 nous fait l\'obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de retard suivant modalités et taux défini par la loi. Une indemnité forfaitaire de 40€ sera due pour frais de recouvrement en cas de retard de paiement.')
 
 
@@ -337,13 +339,13 @@ const template =
       "page_number": {
         "type": "text",
         "position": {
-          "x": 173,
+          "x": 165,
           "y": 12
         },
-        "width": 31,
+        "width": 39,
         "height": 6,
         "alignment": "right",
-        "fontSize": 15,
+        "fontSize": 12,
         "characterSpacing": 0,
         "lineHeight": 1
       },
@@ -367,120 +369,145 @@ function generateSchemaInputs(prestation) {
       )
     }
   }
-  testing(prestation, tabPrestaToPdf)
+  testing(tabPrestaToPdf)
 }
-function testing(prestation, tabPrestaToPdf){
-  let ordonate = 112
+//let nbPage = (Math.trunc( tabPrestaToPdf.length / 24 ))+( (tabPrestaToPdf.length % 24) == 0 ? 0 : 1 )
+//nbPage < 1 ? nbPage = 1 : false
+
+function testing(tabPrestaToPdf){
+  let ordonate
   let bgc = false
-  for (let index = 0; index < tabPrestaToPdf.length; index++) {
-    bgc = !bgc
-    let bgcolor = "#d3d3d3"
-    bgc ? bgcolor= '': false
-    console.log('mabite')
-    let titre = 'presta_title_'+index
-    let prix_unit = 'presta_pu_'+index
-    let quantite = 'presta_qte_'+index
-    let tot = 'presta_total_'+index
-    //automatisation de la generation du template (basePdf)
-    template.schemas[0][titre]= {
-      "type": "text",
-      "position": {
-        "x": 14,
-        "y": ordonate
-      },
-      "width": 112,
-      "height": 5,
-      "fontSize": 10,
-      "lineHeight": 1,
-      "backgroundColor": bgcolor
+  let newtab = repartiteurPage(tabPrestaToPdf)
 
+  for (let idx = 0; idx < newtab.length; idx++) {
+    ordonate = 112
+    debugger
+    for (let index = 0; index < newtab[idx].length; index++) {
+      bgc = !bgc
+      generateTemplatePresta(index, ordonate, newtab, idx, bgc)
+      //hydratation des variables
+      inputs[idx]['presta_title_'+index]= newtab[idx][index][0]
+      inputs[idx]['presta_pu_'+index]= newtab[idx][index][1]
+      inputs[idx]['presta_qte_'+index]= newtab[idx][index][2]
+      inputs[idx]['presta_total_'+index]= newtab[idx][index][3]
+      inputs[idx]['page_number']= 'Page n° '+ JSON.stringify(idx+1) + '/' + newtab.length 
+      ordonate +=6
+      if (index == 22) {
+        newtab[idx+1].length > 0 ? inputs.push({}) : false
+        break
+      }
     }
-    template.schemas[0][prix_unit]= {
-      "type": "text",
-      "position": {
-        "x": 138,
-        "y": ordonate
-      },
-      "width": 29,
-      "height": 5,
-      "fontSize": 10,
-      "alignment": "right",
-      "backgroundColor": bgcolor
-    }
-    template.schemas[0][quantite]= {
-      "type": "text",
-      "position": {
-        "x": 126,
-        "y": ordonate
-      },
-      "width": 12,
-      "height": 5,
-      "fontSize": 10,
-      "alignment": "right",
-      "backgroundColor": bgcolor
-    }
-    template.schemas[0][tot]= {
-      "type": "text",
-      "position": {
-        "x": 167,
-        "y": ordonate
-      },
-      "width": 28,
-      "height": 5,
-      "fontSize": 10,
-      "alignment": "right",
-      "backgroundColor": bgcolor
-    }
-    if (tabPrestaToPdf[index][1] == ' ') {
-      template.schemas[0][titre].fontColor = "#f1c232"
-      template.schemas[0][titre].fontSize = 13
-      template.schemas[0][titre].backgroundColor = ''
-      template.schemas[0][prix_unit].backgroundColor = ''
-      template.schemas[0][quantite].backgroundColor = ''
-      template.schemas[0][tot].backgroundColor = ''
-      bgc = false
-    }
-    //hydratation des variables
-    inputs[0][titre]= tabPrestaToPdf[index][0]
-    inputs[0][prix_unit]= tabPrestaToPdf[index][1]
-    inputs[0][quantite]= tabPrestaToPdf[index][2]
-    inputs[0][tot]= tabPrestaToPdf[index][3]
-  
-    ordonate +=6
   }
 }
-const inputs = [
-  {
-    "siret_enterprise": "Siret : 81896417300020",
-    "name_enterprise": "Anthony Maçonnerie",
-    "adress_enterprise": "268, chemin Capdebarthe",
-    "cp_city_enterprise": "64140, GELOS",
-    "tel_enterprise": "06 50 91 32 91",
-    "mail_enterprise": "anthonymaconnerie@gmail.com",
-    "name_client": full_name_client.value,
-    "adress_client": adress_client.value,
-    "cp_city_client": cp_client.value+', '+city_client.value,
-    "tel_client": tel_client.value,
-    "mail_client": mail_client.value,
-    "label_total_1": "Total HT",
-    "label_total_2": "",
-    "label_total_3": "Net à payer",
-    "label_total_4": "TVA non Applicable,article 293B du CGI",
-    "total_1": total_ttc.value,
-    "total_2": " ",
-    "total_3": total_ttc.value,
-    "text_bottom_left_1": "Conditions de règlement :",
-    "text_bottom_left_2": "30% au démarrage chantier -Acomptes selon avancement des travaux",
-    "text_bottom_left_3": "« Bon pour accord et commande »",
-    "sign_1": " Pour l'entreprise",
-    "sign_2": "Pour le client ",
-    "page_number": " ",
-  }
-]
 
+function repartiteurPage(tabPrestaToPdf){
+  let newtab = []
+  for (let index = 0; index < 25; index++) {
+    if (tabPrestaToPdf.length > 0) {
+      newtab[index] = tabPrestaToPdf.slice(0,23)
+      tabPrestaToPdf.splice(0,23)
+    } else {
+      break
+    }
+  }
+  /*
+  newtab[0] = tabPrestaToPdf.slice(0,23)
+  tabPrestaToPdf.splice(0,23)
+  if (tabPrestaToPdf.length > 0) {
+    newtab[1] = tabPrestaToPdf.slice(0,23)
+    tabPrestaToPdf.splice(0,23)
+  }
+  if (tabPrestaToPdf.length > 0) {
+    newtab[2] = tabPrestaToPdf.slice(0,23)
+    tabPrestaToPdf.splice(0,23)
+  }
+  if (tabPrestaToPdf.length > 0) {
+    newtab[3] = tabPrestaToPdf.slice(0,23)
+    tabPrestaToPdf.splice(0,23)
+  }
+  if (tabPrestaToPdf.length > 0) {
+    newtab[4] = tabPrestaToPdf.slice(0,23)
+    tabPrestaToPdf.splice(0,23)
+  }
+  if (tabPrestaToPdf.length > 0) {
+    newtab[5] = tabPrestaToPdf.slice(0,23)
+    tabPrestaToPdf.splice(0,23)
+  }
+  */
+
+  return newtab
+}
+
+function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
+  let bgcolor = "#d3d3d3"
+  bgc ? bgcolor= '': false
+  //automatisation de la generation du template (basePdf)
+  template.schemas[0]['presta_title_'+index]= {
+    "type": "text",
+    "position": {
+      "x": 14,
+      "y": ordonate
+    },
+    "width": 112,
+    "height": 5,
+    "fontSize": 10,
+    "lineHeight": 1,
+    "backgroundColor": bgcolor
+  }
+  template.schemas[0]['presta_pu_'+index]= {
+    "type": "text",
+    "position": {
+      "x": 138,
+      "y": ordonate
+    },
+    "width": 29,
+    "height": 5,
+    "fontSize": 10,
+    "alignment": "right",
+    "backgroundColor": bgcolor
+  }
+  template.schemas[0]['presta_qte_'+index]= {
+    "type": "text",
+    "position": {
+      "x": 126,
+      "y": ordonate
+    },
+    "width": 12,
+    "height": 5,
+    "fontSize": 10,
+    "alignment": "right",
+    "backgroundColor": bgcolor
+  }
+  template.schemas[0]['presta_total_'+index]= {
+    "type": "text",
+    "position": {
+      "x": 167,
+      "y": ordonate
+    },
+    "width": 28,
+    "height": 5,
+    "fontSize": 10,
+    "alignment": "right",
+    "backgroundColor": bgcolor
+  }
+  if (newtab[idx][index][1] == ' ') {
+    template.schemas[0]['presta_title_'+index].fontColor = "#f1c232"
+    template.schemas[0]['presta_title_'+index].fontSize = 13
+    template.schemas[0]['presta_title_'+index].backgroundColor = ''
+    template.schemas[0]['presta_pu_'+index].backgroundColor = ''
+    template.schemas[0]['presta_qte_'+index].backgroundColor = ''
+    template.schemas[0]['presta_total_'+index].backgroundColor = ''
+    bgc = false
+  }
+}
+
+function checkInput(){
+  if (title && numberDevis && full_name_client && adress_client && cp_client && city_client) {
+    return true
+  }
+}
 
 async function insertDevis() {
-  /*console.log(JSON.stringify(prestations_devis.value))
   const { data, error } = await supabase.from('devis').insert([
     { 
       title: title.value, 
@@ -488,24 +515,51 @@ async function insertDevis() {
       number: numberDevis.value, 
       full_name_client: full_name_client.value, 
       adress_client: adress_client.value,
+      cp_client: cp_client.value,
+      city_client: city_client.value,
+      tel_client: tel_client.value,
+      mail_client: mail_client.value,
       prestations: JSON.stringify(prestations_devis.value),
-      total_ttc: total_ttc.value
+      total_ttc: total_ttc.value,
+      owner: user.value.id
     },
   ])
-  let result = data*/
+  let result = data
+  inputs = [{}]
+  generateSchemaInputs(prestations_devis.value)
   inputs.forEach(elt => {
+    elt.siret_enterprise = "Siret : 81896417300020",
+    elt.name_enterprise = "Anthony Maçonnerie",
+    elt.adress_enterprise = "268, chemin Capdebarthe",
+    elt.cp_city_enterprise = "64140, GELOS",
+    elt.tel_enterprise = "06 50 91 32 91",
+    elt.mail_enterprise = "anthonymaconnerie@gmail.com",
     elt.number = JSON.stringify(numberDevis.value)
     elt.name_client = full_name_client.value
     elt.adress_client = adress_client.value
     elt.cp_city_client = cp_client.value+', '+city_client.value
     elt.tel_client = tel_client.value
     elt.mail_client = mail_client.value
-    elt.total_1 = JSON.stringify(total_ttc.value)+' €'
-    elt.total_3 = JSON.stringify(total_ttc.value)+' €'
   });
-  generateSchemaInputs(prestations_devis.value)
+  let source = {
+    total_1 : JSON.stringify(total_ttc.value)+' €',
+    total_3 : JSON.stringify(total_ttc.value)+' €',
+    label_total_1 : "Total HT",
+    label_total_2 : "",
+    label_total_3 : "Net à payer",
+    label_total_4 : "TVA non Applicablearticle 293B du CGI",
+    total_2 : " ",
+    text_bottom_left_1 : "Conditions de règlement :",
+    text_bottom_left_2 : "30% au démarrage chantier -Acomptes selon avancement des travaux",
+    text_bottom_left_3 : "« Bon pour accord et commande »",
+    sign_1 : " Pour l'entreprise",
+    sign_2 : "Pour le client "
+  }
+  console.log(inputs)
+  console.log(inputs[inputs.length-1])
+  Object.assign(inputs[inputs.length-1],source)
+
   generate({ template, inputs }).then((pdf) => {
-    console.log(pdf);
     // Browser
     const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
     window.open(URL.createObjectURL(blob));
@@ -553,31 +607,32 @@ async function insertDevis() {
     </div>
     <div class="flex justify-between">
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="adress_client">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="cp">
           Code postal
         </label>
-        <input v-model="cp_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="adress_client" type="text" placeholder="adresse">
+        <input v-model="cp_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cp" type="number" placeholder="code postal">
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="adress_client">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="city">
           Ville
         </label>
-        <input v-model="city_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="adress_client" type="text" placeholder="adresse">
+        <input v-model="city_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="city" type="text" placeholder="ville">
       </div>
     </div>
     <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="adress_client">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="tel">
         telephone
       </label>
-      <input v-model="tel_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="adress_client" type="text" placeholder="adresse">
+      <input v-model="tel_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tel" type="tel" placeholder="telephone">
     </div>
     <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="adress_client">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="mail">
         mail du client
       </label>
-      <input v-model="mail_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="adress_client" type="text" placeholder="adresse">
+      <input v-model="mail_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="mail" type="text" placeholder="mail">
     </div>
     <DevisCreateWithPresta @totalttc="(n)=>total_ttc = n" @presta="(n)=>prestations_devis = n"/>
+    <div>{{ warn }}</div>
     <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="insertDevis">Générer le devis</button>
   </div>
   
