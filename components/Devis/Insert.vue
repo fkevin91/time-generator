@@ -15,8 +15,7 @@ const tel_client = ref('')
 const mail_client = ref('')
 const prestations_devis = ref('')
 const total_ttc = ref('')
-const warn = ref('')
-const text_loi = ref('La loi n°92/1442 du 31 décembre 1992 nous fait l\'obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de retard suivant modalités et taux défini par la loi. Une indemnité forfaitaire de 40€ sera due pour frais de recouvrement en cas de retard de paiement.')
+
 
 
 const template = 
@@ -391,8 +390,8 @@ function testing(tabPrestaToPdf){
       inputs[idx]['presta_qte_'+index]= newtab[idx][index][2]
       inputs[idx]['presta_total_'+index]= newtab[idx][index][3]
       inputs[idx]['page_number']= 'Page n° '+ JSON.stringify(idx+1) + '/' + newtab.length 
-      ordonate +=6
-      if (index == 22) {
+      ordonate +=8
+      if (index == 16) {
         newtab[idx+1].length > 0 ? inputs.push({}) : false
         break
       }
@@ -404,8 +403,8 @@ function repartiteurPage(tabPrestaToPdf){
   let newtab = []
   for (let index = 0; index < 25; index++) {
     if (tabPrestaToPdf.length > 0) {
-      newtab[index] = tabPrestaToPdf.slice(0,23)
-      tabPrestaToPdf.splice(0,23)
+      newtab[index] = tabPrestaToPdf.slice(0,17)
+      tabPrestaToPdf.splice(0,17)
     } else {
       break
     }
@@ -449,8 +448,8 @@ function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
       "y": ordonate
     },
     "width": 112,
-    "height": 5,
-    "fontSize": 10,
+    "height": 7,
+    "fontSize": 9,
     "lineHeight": 1,
     "backgroundColor": bgcolor
   }
@@ -461,8 +460,8 @@ function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
       "y": ordonate
     },
     "width": 29,
-    "height": 5,
-    "fontSize": 10,
+    "height": 7,
+    "fontSize": 9,
     "alignment": "right",
     "backgroundColor": bgcolor
   }
@@ -473,8 +472,8 @@ function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
       "y": ordonate
     },
     "width": 12,
-    "height": 5,
-    "fontSize": 10,
+    "height": 7,
+    "fontSize": 9,
     "alignment": "right",
     "backgroundColor": bgcolor
   }
@@ -485,8 +484,8 @@ function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
       "y": ordonate
     },
     "width": 28,
-    "height": 5,
-    "fontSize": 10,
+    "height": 7,
+    "fontSize": 9,
     "alignment": "right",
     "backgroundColor": bgcolor
   }
@@ -632,7 +631,6 @@ async function insertDevis() {
       <input v-model="mail_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="mail" type="text" placeholder="mail">
     </div>
     <DevisCreateWithPresta @totalttc="(n)=>total_ttc = n" @presta="(n)=>prestations_devis = n"/>
-    <div>{{ warn }}</div>
     <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="insertDevis">Générer le devis</button>
   </div>
   

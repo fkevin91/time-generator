@@ -5,6 +5,10 @@ const user = useSupabaseUser()
 const emit = defineEmits(['totalttc', 'presta'])
 const prestations = ref([])
 
+let title = ref('')
+let price = ref('')
+let unit_volum = ref('')
+
 async function getPrestations() {
   const { data } = await supabase.from('prestations').select('*').eq('user', user.value.id)
   data.forEach(element => {
@@ -31,6 +35,20 @@ let moreQuantity = function (a) {
   return a
 }
 
+let addPresta = function () {
+  prestations.value.push({
+    id: 'id'+title+price,
+    title: title,
+    price: price,
+    unit_volum: unit_volum,
+    quantity: 0,
+    total: 0,
+  })
+  title = ''
+  price = ''
+  unit_volum = ''
+}
+
 const totalColumn = computed(()=> {
   let total = 0
   for (const key in prestations.value) {
@@ -52,7 +70,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-1  space-y-2">
+  <div class="p-1 space-y-2">
+    <div class="flex justify-between border rounded-lg">
+      <div class="flex justify-between items-center text-base">
+        <input class="p-1 w-36" v-model="title" placeholder="title" type="text">
+        <input class="p-1 w-16" v-model="price" placeholder="price" type="number">
+        <input class="p-1 w-16" v-model="unit_volum" placeholder="unit" type="text">
+      </div>
+      <button class="p-1 bg-green-500 text-white rounded-lg" @click="addPresta">Ajouter</button>
+    </div>
     <div v-for="item in prestations" :key="item.id">
       <div class="flex justify-between items-center text-base">
         <div class="w-32">{{ item.title }}</div>
