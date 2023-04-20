@@ -76,8 +76,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-1 space-y-2">
-    <div class="flex justify-between">
+  <div class="p-1 space-y-4">
+    <div class="flex justify-between m-2">
       <input class="p-1 w-36 border-b-2 shadow-xl" v-model="title" placeholder="title*" type="text">
       <input class="p-1 w-16 border-b-2 shadow-xl" v-model="price" placeholder="price*" type="number">
       <input class="p-1 w-16 border-b-2 shadow-xl" v-model="unit_volum" placeholder="unit" type="text">
@@ -86,7 +86,7 @@ onMounted(() => {
     <div>{{ avertissement }}</div>
     <div v-for="item in prestations" :key="item.id">
       <div class="flex justify-between items-center text-base">
-        <div class="w-32">{{ item.title }}</div>
+        <div class="w-28 text-sm">{{ item.title }}</div>
         <div class="w-16">{{item.price + '€/' + item.unit_volum }}</div>
         <div class="flex items-center space-x-1">
           <div @click="lessQuantity(item)">
