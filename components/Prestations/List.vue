@@ -8,6 +8,7 @@ const prestations = ref([])
 let title = ref('')
 let price = ref('')
 let unit_volum = ref('')
+let avertissement = ref('')
 
 async function getPrestations() {
   const { data } = await supabase.from('prestations').select('*').eq('user', user.value.id)
@@ -36,17 +37,22 @@ let moreQuantity = function (a) {
 }
 
 let addPresta = function () {
-  prestations.value.push({
-    id: 'id'+title+price,
-    title: title,
-    price: price,
-    unit_volum: unit_volum,
-    quantity: 0,
-    total: 0,
-  })
-  title = ''
-  price = ''
-  unit_volum = ''
+  if (title.value != '' && price.value != '') {
+    avertissement.value = ''
+    prestations.value.push({
+      id: 'id'+title+price,
+      title: title.value,
+      price: price.value,
+      unit_volum: unit_volum.value,
+      quantity: 0,
+      total: 0,
+    })
+    title.value = ''
+    price.value = ''
+    unit_volum.value = ''
+  } else {
+    avertissement.value = 'Veuillez remplir le titre et le prix svp'
+  }
 }
 
 const totalColumn = computed(()=> {
@@ -71,14 +77,13 @@ onMounted(() => {
 
 <template>
   <div class="p-1 space-y-2">
-    <div class="flex justify-between border rounded-lg">
-      <div class="flex justify-between items-center text-base">
-        <input class="p-1 w-36" v-model="title" placeholder="title" type="text">
-        <input class="p-1 w-16" v-model="price" placeholder="price" type="number">
-        <input class="p-1 w-16" v-model="unit_volum" placeholder="unit" type="text">
-      </div>
+    <div class="flex justify-between">
+      <input class="p-1 w-36 border-b-2 shadow-xl" v-model="title" placeholder="title*" type="text">
+      <input class="p-1 w-16 border-b-2 shadow-xl" v-model="price" placeholder="price*" type="number">
+      <input class="p-1 w-16 border-b-2 shadow-xl" v-model="unit_volum" placeholder="unit" type="text">
       <button class="p-1 bg-green-500 text-white rounded-lg" @click="addPresta">Ajouter</button>
     </div>
+    <div>{{ avertissement }}</div>
     <div v-for="item in prestations" :key="item.id">
       <div class="flex justify-between items-center text-base">
         <div class="w-32">{{ item.title }}</div>

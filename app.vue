@@ -13,7 +13,7 @@ async function signOut() {
 </script>
 
 <template>
-  <div class="h-screen bg-slate-200">
+  <div class="h-full min-h-screen bg-slate-200">
     <div class="flex justify-between p-5">
       <div></div>
       <h1 class="text-4xl font-bold">Time Generator</h1>

@@ -370,8 +370,6 @@ function generateSchemaInputs(prestation) {
   }
   testing(tabPrestaToPdf)
 }
-//let nbPage = (Math.trunc( tabPrestaToPdf.length / 24 ))+( (tabPrestaToPdf.length % 24) == 0 ? 0 : 1 )
-//nbPage < 1 ? nbPage = 1 : false
 
 function testing(tabPrestaToPdf){
   let ordonate
@@ -380,7 +378,6 @@ function testing(tabPrestaToPdf){
 
   for (let idx = 0; idx < newtab.length; idx++) {
     ordonate = 112
-    debugger
     for (let index = 0; index < newtab[idx].length; index++) {
       bgc = !bgc
       generateTemplatePresta(index, ordonate, newtab, idx, bgc)
@@ -500,12 +497,6 @@ function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
   }
 }
 
-function checkInput(){
-  if (title && numberDevis && full_name_client && adress_client && cp_client && city_client) {
-    return true
-  }
-}
-
 async function insertDevis() {
   const { data, error } = await supabase.from('devis').insert([
     { 
@@ -571,7 +562,7 @@ async function insertDevis() {
 </script>
 
 <template>
-  <div class="p-3 rounded-lg shadow-xl">
+  <div class="p-3 rounded-lg shadow-xl h-full">
     <div class="flex justify-end">
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="numberdevis">
