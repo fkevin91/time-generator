@@ -2,6 +2,18 @@
 import { BLANK_PDF, generate } from '@pdfme/generator';
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
+const infoUser = ref('')
+const src = ref('')
+
+let { data } = await supabase
+  .from('profiles')
+  .select(`siret_enterprise, name_enterprise, avatar_url, adress_enterprise, cp_enterprise, city_enterprise, tel_enterprise, mail_enterprise`)
+  .eq('id', user.value.id)
+  .single()
+
+if (data) {
+  infoUser.value = data
+}
 
 let inputs
 const title = ref('')
@@ -22,6 +34,15 @@ const template =
 {
   schemas: [
     {
+      "logo": {
+        "type": "image",
+        "position": {
+          "x": 14,
+          "y": 18
+        },
+        "width": 65,
+        "height": 40
+      },
       "number": {
         "type": "text",
         "position": {
@@ -518,12 +539,13 @@ async function insertDevis() {
   inputs = [{}]
   generateSchemaInputs(prestations_devis.value)
   inputs.forEach(elt => {
-    elt.siret_enterprise = "Siret : 81896417300020",
-    elt.name_enterprise = "Anthony Maçonnerie",
-    elt.adress_enterprise = "268, chemin Capdebarthe",
-    elt.cp_city_enterprise = "64140, GELOS",
-    elt.tel_enterprise = "06 50 91 32 91",
-    elt.mail_enterprise = "anthonymaconnerie@gmail.com",
+    elt.logo = getBase64Image(document.getElementById('logo'))
+    elt.siret_enterprise = "Siret : " + infoUser.value.siret_enterprise,
+    elt.name_enterprise = infoUser.value.name_enterprise,
+    elt.adress_enterprise = infoUser.value.adress_enterprise,
+    elt.cp_city_enterprise = infoUser.value.cp_enterprise + ", " + infoUser.value.city_enterprise,
+    elt.tel_enterprise = infoUser.value.tel_enterprise,
+    elt.mail_enterprise = infoUser.value.mail_enterprise,
     elt.number = JSON.stringify(numberDevis.value)
     elt.name_client = full_name_client.value
     elt.adress_client = adress_client.value
@@ -542,7 +564,7 @@ async function insertDevis() {
     text_bottom_left_1 : "Conditions de règlement :",
     text_bottom_left_2 : "30% au démarrage chantier -Acomptes selon avancement des travaux",
     text_bottom_left_3 : "« Bon pour accord et commande »",
-    sign_1 : " Pour l'entreprise",
+    sign_1 : "Pour l'entreprise",
     sign_2 : "Pour le client "
   }
   console.log(inputs)
@@ -559,12 +581,38 @@ async function insertDevis() {
   })
 }
 
+const downloadImage = async () => {
+  try {
+    const { data, error } = await supabase.storage.from('avatars').download(infoUser.value.avatar_url)
+    if (error) throw error
+    src.value = URL.createObjectURL(data)
+  } catch (error) {
+    console.error('Error downloading image: ', error.message)
+  }
+}
+document.getElementById('logo')
+
+function getBase64Image(img) {
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  var dataURL = canvas.toDataURL("image/jpeg");
+  console.log(dataURL)
+  return dataURL
+}
+
+downloadImage()
+
 </script>
 
 <template>
   <div class="p-3 rounded-lg shadow-xl h-full">
-    <div class="flex justify-end">
-      <div class="mb-4">
+    <img :src="src" alt="" id="logo" class="hidden" >
+    <div class="flex justify-between">
+      <img :src="src" alt="" style="max-width: 40%; height: auto;">
+      <div class="">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="numberdevis">
           N° de devis
         </label>
