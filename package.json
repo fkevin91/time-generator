@@ -17,6 +17,6 @@
   },
   "dependencies": {
     "@pdfme/generator": "^1.1.9",
-    "@pdfme/ui": "^1.1.9"
+    "@pdfme/ui": "^1.1.10"
   }
 }

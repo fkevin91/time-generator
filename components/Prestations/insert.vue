@@ -43,7 +43,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-3 rounded-lg shadow-xl h-full space-y-3">
+  <div class="p-3 rounded-lg shadow-xl h-full space-y-3 opacity-80 bg-white">
     <div class="flex justify-between">
       <input class="p-1 w-36 border-b-2 shadow-xl" v-model="title" placeholder="titre*" type="text">
       <input class="p-1 w-16 border-b-2 shadow-xl" v-model="price" placeholder="prix*" type="number">

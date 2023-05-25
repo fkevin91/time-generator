@@ -16,7 +16,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="p-3 opacity-80 bg-white">
     <div v-for="item in devis" :key="item.id">
       {{item.number + ' => ' + item.title + ' => ' + item.description }}
     </div>

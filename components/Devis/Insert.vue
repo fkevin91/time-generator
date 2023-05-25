@@ -1,10 +1,12 @@
 <script setup >
 import { BLANK_PDF, generate } from '@pdfme/generator';
+import { Viewer } from '@pdfme/ui';
+
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const infoUser = ref('')
 const src = ref('')
-
+let formulaire = ref(true)
 let { data } = await supabase
   .from('profiles')
   .select(`siret_enterprise, name_enterprise, avatar_url, adress_enterprise, cp_enterprise, city_enterprise, tel_enterprise, mail_enterprise`)
@@ -570,15 +572,18 @@ async function insertDevis() {
   console.log(inputs)
   console.log(inputs[inputs.length-1])
   Object.assign(inputs[inputs.length-1],source)
+  formulaire.value = false
+  const domContainer = document.getElementById('container');
+  const viewer = new Viewer({ domContainer, template, inputs });
 
-  generate({ template, inputs }).then((pdf) => {
+  /*generate({ template, inputs }).then((pdf) => {
     // Browser
     const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
     window.open(URL.createObjectURL(blob));
 
     // Node.js
     // fs.writeFileSync(path.join(__dirname, `test.pdf`), pdf);
-  })
+  })*/
 }
 
 const downloadImage = async () => {
@@ -608,69 +613,76 @@ downloadImage()
 </script>
 
 <template>
-  <div class="p-3 rounded-lg shadow-xl h-full">
-    <img :src="src" alt="" id="logo" class="hidden" >
-    <div class="flex justify-between">
-      <img :src="src" alt="" style="max-width: 40%; height: auto;">
-      <div class="">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="numberdevis">
-          N° de devis
-        </label>
-        <input v-model="numberDevis" class="shadow appearance-none border rounded w-28 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="numberdevis" type="number" placeholder="n° devis">
-      </div>
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-        Titre
-      </label>
-      <input v-model="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" placeholder="titre">
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
-        Description
-      </label>
-      <input v-model="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" type="text" placeholder="description">
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="full_name_client">
-        Nom prénom du client
-      </label>
-      <input v-model="full_name_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="full_name_client" type="text" placeholder="nom prénom">
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="adress_client">
-        Adresse
-      </label>
-      <input v-model="adress_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="adress_client" type="text" placeholder="adresse">
-    </div>
-    <div class="flex justify-between">
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="cp">
-          Code postal
-        </label>
-        <input v-model="cp_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cp" type="number" placeholder="code postal">
+  <div class="space-y-3">
+    <div v-show="formulaire" class="p-3 rounded-lg shadow-xl w-full h-full opacity-80 bg-white">
+      <img :src="src" alt="" id="logo" class="hidden" >
+      <div class="flex justify-between">
+        <img :src="src" alt="" style="max-width: 40%; height: auto;">
+        <div class="">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="numberdevis">
+            N° de devis
+          </label>
+          <input v-model="numberDevis" class="shadow appearance-none border rounded w-28 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="numberdevis" type="number" placeholder="n° devis">
+        </div>
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="city">
-          Ville
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+          Titre
         </label>
-        <input v-model="city_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="city" type="text" placeholder="ville">
+        <input v-model="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" placeholder="titre">
       </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+          Description
+        </label>
+        <input v-model="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" type="text" placeholder="description">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="full_name_client">
+          Nom prénom du client
+        </label>
+        <input v-model="full_name_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="full_name_client" type="text" placeholder="nom prénom">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="adress_client">
+          Adresse
+        </label>
+        <input v-model="adress_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="adress_client" type="text" placeholder="adresse">
+      </div>
+      <div class="flex justify-between">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="cp">
+            Code postal
+          </label>
+          <input v-model="cp_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cp" type="number" placeholder="code postal">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="city">
+            Ville
+          </label>
+          <input v-model="city_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="city" type="text" placeholder="ville">
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="tel">
+          telephone
+        </label>
+        <input v-model="tel_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tel" type="tel" placeholder="telephone">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="mail">
+          mail du client
+        </label>
+        <input v-model="mail_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="mail" type="text" placeholder="mail">
+      </div>
+      <DevisCreateWithPresta @totalttc="(n)=>total_ttc = n" @presta="(n)=>prestations_devis = n"/>
+      <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="insertDevis">Générer le devis</button>
     </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="tel">
-        telephone
-      </label>
-      <input v-model="tel_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tel" type="tel" placeholder="telephone">
+    <div v-if="!formulaire" class="flex justify-between">
+      <button @click="formulaire = true" class="text-white p-3 bg-blue-400 rounded-lg">Modifier le PDF</button>
+      <button class="text-white p-3 bg-green-400 rounded-lg">Signer & Envoyer</button>
     </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="mail">
-        mail du client
-      </label>
-      <input v-model="mail_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="mail" type="text" placeholder="mail">
-    </div>
-    <DevisCreateWithPresta @totalttc="(n)=>total_ttc = n" @presta="(n)=>prestations_devis = n"/>
-    <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="insertDevis">Générer le devis</button>
+    <div v-show="!formulaire" id="container" style="width: 100%;height: 66vh;"></div>
   </div>
   
 </template>

@@ -57,11 +57,7 @@ const loginWithEmail = async () => {
 
 <template>
   <div>
-    <div class="flex justify-center mt-10">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-60 h-60">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    </div>
+
     <div class="flex justify-evenly p-10 mt-10" v-if="display == ''">
       <!--
         <div @click="display = 'magic'">Se connecter par MagicMail</div>
