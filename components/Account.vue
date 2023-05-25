@@ -48,38 +48,25 @@ async function updateProfile() {
   }
 }
 
-async function signOut() {
-  try {
-    loading.value = true
-    let { error } = await supabase.auth.signOut()
-    if (error) throw error
-  } catch (error) {
-    alert(error.message)
-  } finally {
-    loading.value = false
-  }
-}
-
-
-
 </script>
 
 <template>
-  <div class="p-3 opacity-80 bg-white">
+  <div class="p-3 opacity-90 bg-white">
     <form class="form-widget" @submit.prevent="updateProfile">
       <Avatar v-model:path="avatar_path" @upload="updateProfile" />
-      <div>
-        <label for="email">Email</label>
-        <input id="email" type="text" :value="user.email" disabled />
+      <div class="mb-6">
+        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+        <input type="email" id="email" :value="user.email" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required>
       </div>
-      <div>
-        <label for="username">Name</label>
-        <input id="username" type="text" v-model="username" />
+      <div class="mb-6">
+        <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">username</label>
+        <input type="username" id="username" v-model="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required>
       </div>
-      <div>
-        <label for="website">Website</label>
-        <input id="website" type="website" v-model="website" />
+      <div class="mb-6">
+        <label for="website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website</label>
+        <input type="website" id="website" v-model="website" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required>
       </div>
+      <Signature />
   
       <div>
         <input
@@ -88,10 +75,6 @@ async function signOut() {
           :value="loading ? 'Loading ...' : 'Update'"
           :disabled="loading"
         />
-      </div>
-  
-      <div>
-        <button class="button block" @click="signOut" :disabled="loading">Sign Out</button>
       </div>
     </form>
   </div>

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@pdfme/generator": "^1.1.9",
-    "@pdfme/ui": "^1.1.10"
+    "@pdfme/ui": "^1.1.10",
+    "signature_pad": "^4.1.5"
   }
 }
