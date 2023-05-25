@@ -77,7 +77,7 @@ onMounted(() => {
 
 <template>
   <div class="p-1 space-y-4">
-    <div class="flex justify-between m-2">
+    <div class="flex justify-between flex-wrap">
       <input class="p-1 w-36 border-b-2 shadow-xl" v-model="title" placeholder="title*" type="text">
       <input class="p-1 w-16 border-b-2 shadow-xl" v-model="price" placeholder="price*" type="number">
       <input class="p-1 w-16 border-b-2 shadow-xl" v-model="unit_volum" placeholder="unit" type="text">

@@ -14,7 +14,7 @@ async function signOut() {
 </script>
 
 <template>
-  <div class="h-full min-h-screen background-size p-4" :style="{ backgroundImage: `url(${urlImage})` }">
+  <div class="h-full min-h-screen background-size" :style="{ backgroundImage: `url(${urlImage})` }">
     <div>
       <div class="flex justify-between p-8 text-white">
         <div></div>

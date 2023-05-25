@@ -614,7 +614,7 @@ downloadImage()
 
 <template>
   <div class="space-y-3">
-    <div v-show="formulaire" class="p-3 rounded-lg shadow-xl w-full h-full opacity-80 bg-white">
+    <div v-show="formulaire" class="p-3 rounded-lg shadow-xl w-full h-full opacity-90 bg-white">
       <img :src="src" alt="" id="logo" class="hidden" >
       <div class="flex justify-between">
         <img :src="src" alt="" style="max-width: 40%; height: auto;">
