@@ -1,6 +1,6 @@
 <script setup>
 import sgMail from '@sendgrid/mail'
-sgMail.setApiKey('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')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
 const supabase = useSupabaseClient()
