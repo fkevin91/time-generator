@@ -771,6 +771,29 @@
     "@daybrush/utils" "^1.4.0"
     "framework-utils" "^1.1.0"
 
+"@sendgrid/client@^7.7.0":
+  "integrity" "sha512-SxH+y8jeAQSnDavrTD0uGDXYIIkFylCo+eDofVmZLQ0f862nnqbC3Vd1ej6b7Le7lboyzQF6F7Fodv02rYspuA=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/client/-/client-7.7.0.tgz"
+  "version" "7.7.0"
+  dependencies:
+    "@sendgrid/helpers" "^7.7.0"
+    "axios" "^0.26.0"
+
+"@sendgrid/helpers@^7.7.0":
+  "integrity" "sha512-3AsAxfN3GDBcXoZ/y1mzAAbKzTtUZ5+ZrHOmWQ279AuaFXUNCh9bPnRpN504bgveTqoW+11IzPg3I0WVgDINpw=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/helpers/-/helpers-7.7.0.tgz"
+  "version" "7.7.0"
+  dependencies:
+    "deepmerge" "^4.2.2"
+
+"@sendgrid/mail@^7.7.0":
+  "integrity" "sha512-5+nApPE9wINBvHSUxwOxkkQqM/IAAaBYoP9hw7WwgDNQPxraruVqHizeTitVtKGiqWCKm2mnjh4XGN3fvFLqaw=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/mail/-/mail-7.7.0.tgz"
+  "version" "7.7.0"
+  dependencies:
+    "@sendgrid/client" "^7.7.0"
+    "@sendgrid/helpers" "^7.7.0"
+
 "@supabase/functions-js@^2.1.0":
   "integrity" "sha512-vRziB+AqRXRaGHjEFHwBo0kuNDTuAxI7VUeqU24Fe86ISoD8YEQm0dGdpleJEcqgDGWaO6pxT1tfj1BRY5PwMg=="
   "resolved" "https://registry.npmjs.org/@supabase/functions-js/-/functions-js-2.1.0.tgz"
@@ -1190,6 +1213,13 @@
     "normalize-range" "^0.1.2"
     "picocolors" "^1.0.0"
     "postcss-value-parser" "^4.2.0"
+
+"axios@^0.26.0":
+  "integrity" "sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.26.1.tgz"
+  "version" "0.26.1"
+  dependencies:
+    "follow-redirects" "^1.14.8"
 
 "balanced-match@^1.0.0":
   "integrity" "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw=="
@@ -2127,7 +2157,7 @@
   "resolved" "https://registry.npmjs.org/flat/-/flat-5.0.2.tgz"
   "version" "5.0.2"
 
-"follow-redirects@^1.0.0":
+"follow-redirects@^1.0.0", "follow-redirects@^1.14.8":
   "integrity" "sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA=="
   "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.2.tgz"
   "version" "1.15.2"
