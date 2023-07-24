@@ -5,6 +5,7 @@ const { testexample } = await useFetch('/api/hello')
 console.log(testexample)
 const loading = ref(true)
 const username = ref('')
+const name_enterprise = ref('')
 const mail_enterprise = ref('')
 const full_name = ref('')
 const avatar_path = ref('')
@@ -20,7 +21,7 @@ const user = useSupabaseUser()
 
 let { data } = await supabase
   .from('profiles')
-  .select(`mail_enterprise, username, website, avatar_url, full_name, siret_enterprise, adress_enterprise, cp_enterprise, city_enterprise, tel_enterprise`)
+  .select(`mail_enterprise, name_enterprise, username, website, avatar_url, full_name, siret_enterprise, adress_enterprise, cp_enterprise, city_enterprise, tel_enterprise`)
   .eq('id', user.value.id)
   .single()
 
@@ -28,6 +29,7 @@ if (data) {
   username.value = data.username
   website.value = data.website
   avatar_path.value = data.avatar_url
+  name_enterprise.value = data.name_enterprise
   mail_enterprise.value = data.mail_enterprise
   full_name.value = data.full_name
   siret_enterprise.value = data.siret_enterprise
@@ -50,6 +52,7 @@ async function updateProfile() {
       website: website.value,
       avatar_url: avatar_path.value,
       updated_at: new Date(),
+      name_enterprise: name_enterprise.value,
       mail_enterprise: mail_enterprise.value,
       full_name: full_name.value,
       siret_enterprise: siret_enterprise.value,
@@ -78,7 +81,7 @@ async function updateProfile() {
       <Avatar v-model:path="avatar_path" @upload="updateProfile" />
       <div class="mb-6">
         <label for="mail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">mail utilisateur</label>
-        <input type="mail" id="mail" :value="user.mail" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail" required>
+        <input type="mail" id="mail" :value="user.email" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail" required>
       </div>
       <div class="mb-6">
         <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">username</label>
