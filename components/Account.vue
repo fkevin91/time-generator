@@ -1,10 +1,8 @@
+
 <script setup>
-import sgMail from '@sendgrid/mail'
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-
-
 const supabase = useSupabaseClient()
-
+const { testexample } = await useFetch('/api/hello')
+console.log(testexample)
 const loading = ref(true)
 const username = ref('')
 const website = ref('')
@@ -51,31 +49,10 @@ async function updateProfile() {
     loading.value = false
   }
 }
-
-
-const sendEmail = () => {
-  const msg = {
-    to: 'k.fardeau123@gmail.com', // Change to your recipient
-    from: 'qoutegeniusfr@gmail.com', // Change to your verified sender
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  }
-
-  sgMail.send(msg)
-  .then(() => {
-    console.log('Email sent')
-  })
-  .catch((error) => {
-    console.error(error)
-  })
-}
-
 </script>
 
 <template>
   <div class="p-3 opacity-90 bg-white">
-    <button @click="sendEmail" class="p-3 bg-purple-600 text-white">envoyer mail test</button>
     <form class="form-widget" @submit.prevent="updateProfile">
       <Avatar v-model:path="avatar_path" @upload="updateProfile" />
       <div class="mb-6">
@@ -90,7 +67,10 @@ const sendEmail = () => {
         <label for="website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website</label>
         <input type="website" id="website" v-model="website" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required>
       </div>
-      <Signature />
+      <div>
+        <Signature />
+      </div>
+      <pre>{{ testexample }}</pre>
   
       <div>
         <input
