@@ -83,12 +83,12 @@ async function updateProfile() {
         <label for="mail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email de connexion</label>
         <input type="mail" id="mail" :value="user.email" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail" required>
       </div>
-      <div class="flex justify-between">
-        <div class="mb-6">
+      <div class="flex justify-between mb-6">
+        <div class="p-1">
           <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom*</label>
           <input type="full_name" id="full_name" v-model="full_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="full_name" required>
         </div>
-        <div class="mb-6">
+        <div class="p-1">
           <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prénom*</label>
           <input type="username" id="username" v-model="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" required>
         </div>
@@ -128,8 +128,8 @@ async function updateProfile() {
       <div>
         <input
           type="submit"
-          class="rounded-lg p-3 bg-blue-500 text-white cursor-pointer"
-          :value="loading ? 'Loading ...' : 'Update'"
+          class="rounded-lg p-3 bg-blue-500 text-white cursor-pointer w-full"
+          :value="loading ? 'Chargement ...' : 'Mettre a jour mes infos'"
           :disabled="loading"
         />
       </div>
