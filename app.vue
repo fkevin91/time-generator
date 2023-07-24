@@ -26,6 +26,7 @@ async function signOut() {
         </button>
         <div v-if="!user"></div>
       </div>
+      <Logo/>
     </div>
     <Home v-if="user" />
     <Auth v-else />
