@@ -67,9 +67,9 @@ watch(path, () => {
     />
     <div v-else class="avatar no-image" :style="{ height: size, width: size }" />
 
-    <div style="width: 10em; position: relative;">
+    <div>
       <label class="rounded-lg p-3 bg-blue-500 text-white cursor-pointer w-full" for="single">
-        {{ uploading ? 'téléchargement ...' : 'Télécharger nouveau logo' }}
+        {{ uploading ? 'téléchargement ...' : 'Nouveau logo' }}
       </label>
       <input
         style="position: absolute; visibility: hidden;"
