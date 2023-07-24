@@ -5,15 +5,22 @@ const { testexample } = await useFetch('/api/hello')
 console.log(testexample)
 const loading = ref(true)
 const username = ref('')
-const website = ref('')
+const mail_enterprise = ref('')
+const full_name = ref('')
 const avatar_path = ref('')
+const siret_enterprise = ref('')
+const adress_enterprise = ref('')
+const cp_enterprise = ref('')
+const city_enterprise = ref('')
+const tel_enterprise = ref('')
+const website = ref('')
 
 loading.value = true
 const user = useSupabaseUser()
 
 let { data } = await supabase
   .from('profiles')
-  .select(`username, website, avatar_url`)
+  .select(`mail_enterprise, username, website, avatar_url, full_name, siret_enterprise, adress_enterprise, cp_enterprise, city_enterprise, tel_enterprise`)
   .eq('id', user.value.id)
   .single()
 
@@ -21,6 +28,13 @@ if (data) {
   username.value = data.username
   website.value = data.website
   avatar_path.value = data.avatar_url
+  mail_enterprise.value = data.mail_enterprise
+  full_name.value = data.full_name
+  siret_enterprise.value = data.siret_enterprise
+  adress_enterprise.value = data.adress_enterprise
+  cp_enterprise.value = data.cp_enterprise
+  city_enterprise.value = data.city_enterprise
+  tel_enterprise.value = data.tel_enterprise
 }
 
 loading.value = false
@@ -36,6 +50,13 @@ async function updateProfile() {
       website: website.value,
       avatar_url: avatar_path.value,
       updated_at: new Date(),
+      mail_enterprise: mail_enterprise.value,
+      full_name: full_name.value,
+      siret_enterprise: siret_enterprise.value,
+      adress_enterprise: adress_enterprise.value,
+      cp_enterprise: cp_enterprise.value,
+      city_enterprise: city_enterprise.value,
+      tel_enterprise: tel_enterprise.value,
     }
 
     let { error } = await supabase.from('profiles').upsert(updates, {
@@ -56,30 +77,61 @@ async function updateProfile() {
     <form class="form-widget" @submit.prevent="updateProfile">
       <Avatar v-model:path="avatar_path" @upload="updateProfile" />
       <div class="mb-6">
-        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-        <input type="email" id="email" :value="user.email" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required>
+        <label for="mail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">mail utilisateur</label>
+        <input type="mail" id="mail" :value="user.mail" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail" required>
       </div>
       <div class="mb-6">
         <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">username</label>
-        <input type="username" id="username" v-model="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required>
+        <input type="username" id="username" v-model="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username" required>
+      </div>
+      <div class="mb-6">
+        <label for="full_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">full_name</label>
+        <input type="full_name" id="full_name" v-model="full_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="full_name" required>
+      </div>
+      <div class="mb-6">
+        <label for="mail_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">mail_enterprise</label>
+        <input type="mail_enterprise" id="mail_enterprise" :value="mail_enterprise" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail_enterprise" required>
       </div>
       <div class="mb-6">
         <label for="website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website</label>
-        <input type="website" id="website" v-model="website" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" required>
+        <input type="website" id="website" v-model="website" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="URL web site">
       </div>
-      <div>
-        <Signature />
+      <div class="mb-6">
+        <label for="siret_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">siret_enterprise</label>
+        <input type="siret_enterprise" id="siret_enterprise" v-model="siret_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="siret_enterprise" required>
       </div>
-      <pre>{{ testexample }}</pre>
-  
+      <div class="mb-6">
+        <label for="name_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">name_enterprise</label>
+        <input type="name_enterprise" id="name_enterprise" v-model="name_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name_enterprise" required>
+      </div>
+      <div class="mb-6">
+        <label for="adress_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">adress_enterprise</label>
+        <input type="adress_enterprise" id="adress_enterprise" v-model="adress_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="adress_enterprise" required>
+      </div>
+      <div class="mb-6">
+        <label for="cp_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">cp_enterprise</label>
+        <input type="cp_enterprise" id="cp_enterprise" v-model="cp_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="cp_enterprise" required>
+      </div>
+      <div class="mb-6">
+        <label for="city_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">city_enterprise</label>
+        <input type="city_enterprise" id="city_enterprise" v-model="city_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="city_enterprise" required>
+      </div>
+      <div class="mb-6">
+        <label for="tel_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">tel_enterprise</label>
+        <input type="tel_enterprise" id="tel_enterprise" v-model="tel_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="tel_enterprise" required>
+      </div>
       <div>
         <input
           type="submit"
-          class="button primary block"
+          class="rounded-lg p-3 bg-blue-500 text-white cursor-pointer"
           :value="loading ? 'Loading ...' : 'Update'"
           :disabled="loading"
         />
       </div>
     </form>
+    <div>
+      <Signature />
+    </div>
+    <pre>{{ testexample }}</pre>
   </div>
 </template>
