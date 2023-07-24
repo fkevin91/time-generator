@@ -95,7 +95,7 @@ async function updateProfile() {
       </div>
       <div class="mb-6">
         <label for="mail_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email enterprise*</label>
-        <input type="mail_enterprise" id="mail_enterprise" :value="mail_enterprise" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail_enterprise" required>
+        <input type="mail_enterprise" id="mail_enterprise" :value="mail_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail_enterprise" required>
       </div>
       <div class="mb-6">
         <label for="siret_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Siret enterprise*</label>
@@ -134,9 +134,11 @@ async function updateProfile() {
         />
       </div>
     </form>
-    <div>
-      <Signature />
-    </div>
-    <pre>{{ testexample }}</pre>
+    <!--
+      <div>
+        <Signature />
+      </div>
+      <pre>{{ testexample }}</pre>
+    -->
   </div>
 </template>
