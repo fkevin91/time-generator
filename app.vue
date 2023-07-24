@@ -26,7 +26,6 @@ async function signOut() {
         </button>
       </div>
     </div>
-    <div>{{JSON.stringify(user)}}</div>
     <Home v-if="user" />
     <Auth v-else />
   </div>
