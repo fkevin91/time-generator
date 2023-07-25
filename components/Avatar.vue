@@ -57,7 +57,7 @@ watch(path, () => {
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-wrap items-center justify-evenly">
     <img
       v-if="src"
       :src="src"

@@ -15,7 +15,7 @@ async function signOut() {
 
 <template>
   <div class="h-full min-h-screen background-size" :style="{ backgroundImage: `url(${urlImage})` }">
-    <div>
+    <div class="mb-24">
       <div class="flex justify-between p-8 text-white">
         <div></div>
         <h1 class="text-4xl font-bold">QUOTE GENIUS</h1>
@@ -26,8 +26,7 @@ async function signOut() {
         </button>
         <div v-if="!user"></div>
       </div>
-      <div class="flex justify-center">
-        <Logo/>
+      <div class="flex justify-center opacity-0">
       </div>
     </div>
     <Home v-if="user" />

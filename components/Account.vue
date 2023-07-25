@@ -78,7 +78,7 @@ async function updateProfile() {
 <template>
   <div class="p-3 opacity-90 bg-white">
     <form class="form-widget" @submit.prevent="updateProfile">
-      <Avatar v-model:path="avatar_path" @upload="updateProfile" />
+      <Avatar v-model:path="avatar_path" @upload="updateProfile" class="mb-5"/>
       <div class="mb-6">
         <label for="mail" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email de connexion</label>
         <input type="mail" id="mail" :value="user.email" disabled class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail" required>

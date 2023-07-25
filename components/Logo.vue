@@ -8,7 +8,7 @@
       version="1.0"
       viewBox="-5.7 -3.3 2005.7 1823.2"
       width="2005.7"
-      class="h-40 w-40 text-white"
+      class="h-40 w-40"
       zoomAndPan="magnify"
     >
       <g id="change1_1">
