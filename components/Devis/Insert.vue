@@ -30,6 +30,35 @@ const mail_client = ref('')
 const prestations_devis = ref('')
 const total_ttc = ref('')
 
+let label_total_1 = ref("")
+let label_total_2 = ref("")
+let label_total_3 = ref("")
+let label_total_4 = ref("")
+let total_2 = ref(0)
+let text_bottom_left_1 = ref("")
+let text_bottom_left_2 = ref("")
+let text_bottom_left_3 = ref("")
+let sign_1 = ref("")
+let sign_2 = ref("")
+let useTVA = ref(null)
+
+async function getSetting() {
+  let { data } = await supabase.from('settingdevis').select('*').eq('user', user.value.id)
+  console.log(data)
+  if (data[0]) {
+    label_total_1.value = data[0].label_total_1 
+    label_total_2.value = data[0].label_total_2
+    label_total_3.value = data[0].label_total_3
+    label_total_4.value = data[0].label_total_4
+    total_2.value = data[0].total_2
+    text_bottom_left_1.value = data[0].text_bottom_left_1
+    text_bottom_left_2.value = data[0].text_bottom_left_2
+    text_bottom_left_3.value = data[0].text_bottom_left_3
+    sign_1.value = data[0].sign_1
+    sign_2.value = data[0].sign_2
+    useTVA.value = data[0].useTVA
+  }
+}
 
 
 const template = 
@@ -520,7 +549,7 @@ function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
   }
 }
 
-async function insertDevis() {
+async function previewDevis() {
   const { data, error } = await supabase.from('devis').insert([
     { 
       title: title.value, 
@@ -555,19 +584,20 @@ async function insertDevis() {
     elt.tel_client = tel_client.value
     elt.mail_client = mail_client.value
   });
+  total_2.value = (total_2.value == 0 ? '' : JSON.stringify(total_2.value)+ '%')
   let source = {
     total_1 : JSON.stringify(total_ttc.value)+' €',
     total_3 : JSON.stringify(total_ttc.value)+' €',
-    label_total_1 : "Total HT",
-    label_total_2 : "",
-    label_total_3 : "Net à payer",
-    label_total_4 : "TVA non Applicablearticle 293B du CGI",
-    total_2 : " ",
-    text_bottom_left_1 : "Conditions de règlement :",
-    text_bottom_left_2 : "30% au démarrage chantier -Acomptes selon avancement des travaux",
-    text_bottom_left_3 : "« Bon pour accord et commande »",
-    sign_1 : "Pour l'entreprise",
-    sign_2 : "Pour le client "
+    total_2 : total_2.value,
+    label_total_1 : label_total_1.value,
+    label_total_2 : label_total_2.value,
+    label_total_3 : label_total_3.value,
+    label_total_4 : label_total_4.value,
+    text_bottom_left_1 : text_bottom_left_1.value,
+    text_bottom_left_2 : text_bottom_left_2.value,
+    text_bottom_left_3 : text_bottom_left_3.value,
+    sign_1 : sign_1.value,
+    sign_2 : sign_2.value
   }
   console.log(inputs)
   console.log(inputs[inputs.length-1])
@@ -608,7 +638,10 @@ function getBase64Image(img) {
   return dataURL
 }
 
-downloadImage()
+onMounted(() => {
+  getSetting()
+  downloadImage()
+})
 
 </script>
 
@@ -676,7 +709,7 @@ downloadImage()
         <input v-model="mail_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="mail" type="text" placeholder="mail">
       </div>
       <DevisCreateWithPresta @totalttc="(n)=>total_ttc = n" @presta="(n)=>prestations_devis = n"/>
-      <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="insertDevis">Générer le devis</button>
+      <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="previewDevis">Générer le devis</button>
     </div>
     <div v-if="!formulaire" class="flex justify-between">
       <button @click="formulaire = true" class="text-white p-3 bg-blue-400 rounded-lg">Modifier le PDF</button>

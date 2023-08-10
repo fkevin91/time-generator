@@ -26,6 +26,7 @@ let addPresta = async function () {
     title.value = ''
     price.value = ''
     unit_volum.value = ''
+    getPrestations()
   } else {
     avertissement.value = 'Veuillez remplir le titre et le prix svp'
   }
