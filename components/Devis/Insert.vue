@@ -54,7 +54,7 @@ const notifyError = (text) => {
 
 const notifyInfo = (text) => {  
   toast.success(text, {
-    position: toast.POSITION.TOP_CENTER,
+    position: toast.POSITION.BOTTOM_CENTER,
     transition: toast.TRANSITIONS.BOUNCE,
   });
 }
@@ -565,8 +565,10 @@ function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
   }
 }
 
-async function previewDevis() {
-  const { data, error } = await supabase.from('devis').insert([
+async function sendDevis() {}
+
+async function saveDevis() {
+  const data = await supabase.from('devis').insert([
     { 
       title: title.value, 
       description: description.value, 
@@ -582,8 +584,11 @@ async function previewDevis() {
       owner: user.value.id
     },
   ])
-  if (!error) {
-    notifyInfo('Le devis a été automatiquement enregistré')
+  data.status != 201 ? notifyError('Veuillez remplir les champs manquants') : notifyInfo('Le devis a bien été enregistré')
+  return data
+}
+
+async function previewDevis() {
     inputs = [{}]
     generateSchemaInputs(prestations_devis.value)
     inputs.forEach(elt => {
@@ -629,9 +634,6 @@ async function previewDevis() {
       // Node.js
       // fs.writeFileSync(path.join(__dirname, `test.pdf`), pdf);
     })*/
-  } else {
-    notifyError('Veuillez remplir les champs manquants')
-  }
 
 }
 
@@ -727,16 +729,19 @@ onMounted(() => {
         <input v-model="mail_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="mail" type="text" placeholder="mail">
       </div>
       <DevisCreateWithPresta @totalttc="(n)=>total_ttc = n" @presta="(n)=>prestations_devis = n"/>
-      <div class="Toastify"></div>
       <div class="flex justify-between space-x-3">
+        <button class="p-1 italic w-full text-center bg-yellow-500 text-white rounded-lg" @click="saveDevis">Enregistrer pour plus tard</button>
         <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="previewDevis">Générer le devis</button>
       </div>
     </div>
     <div v-if="!formulaire" class="flex justify-between">
-      <button @click="formulaire = true" class="text-white p-3 bg-blue-400 rounded-lg">Modifier le PDF</button>
-      <button class="text-white p-3 bg-green-400 rounded-lg">Signer & Envoyer</button>
+      <button @click="formulaire = true" class="text-white p-3 bg-blue-500 rounded-lg">Modifier le PDF</button>
+      <button @click="saveDevis" class="text-white p-3 bg-yellow-500 rounded-lg">Enregistrer pour plus tard</button>
+      <button @click="sendDevis" class="text-white p-3 bg-green-500 rounded-lg">Signer & Envoyer</button>
     </div>
     <div v-show="!formulaire" id="container" style="width: 100%;height: 66vh;"></div>
+    <div class="Toastify"></div>
+
   </div>
   
 </template>
