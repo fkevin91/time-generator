@@ -2,6 +2,8 @@
 <script setup >
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import imageSrc from 'assets/image/example-setting.jpg'
 
 let label_total_1 = ref("Total HT")
@@ -19,13 +21,26 @@ let sign_2 = ref("Pour le client")
 let useTVA = ref(false)
 let setting_exist = ref(false)
 
+const notifyError = (text) => {  
+  toast.error(text, {
+    position: toast.POSITION.BOTTOM_CENTER,
+    transition: toast.TRANSITIONS.BOUNCE,
+  });
+}
+
+const notifyInfo = (text) => {  
+  toast.success(text, {
+    position: toast.POSITION.BOTTOM_CENTER,
+    transition: toast.TRANSITIONS.BOUNCE,
+  });
+}
+
 function toggleTVA() {
   useTVA.value = !useTVA.value;
 }
 
 async function getSetting() {
   let { data } = await supabase.from('settingdevis').select('*').eq('user', user.value.id)
-  console.log(data)
   if (data[0]) {
     setting_exist.value = true
     label_total_1.value = data[0].label_total_1 
@@ -59,18 +74,20 @@ async function setSetting() {
   }
   
   if (setting_exist.value) {
-    const { data } = await supabase
+    const data = await supabase
     .from('settingdevis')
     .update(settings_data)
     .eq('user', user.value.id)
     .select()
+    data.status != 200 ? notifyError('Un problème est survenue, veuillez recommencer') : notifyInfo('Les modifications ont bien été enregistré')
   } else {
-    const { data } = await supabase
+    const data = await supabase
     .from('settingdevis')
     .insert(settings_data)
     .eq('user', user.value.id)
     .select()
     setting_exist.value = true
+    data.status != 200 ? notifyError('Un problème est survenue, veuillez recommencer') : notifyInfo('Les modifications ont bien été enregistré')
   }
 
 }

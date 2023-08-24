@@ -1,5 +1,8 @@
 
 <script setup>
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 const supabase = useSupabaseClient()
 const { testexample } = await useFetch('/api/hello')
 console.log(testexample)
@@ -39,6 +42,20 @@ if (data) {
   tel_enterprise.value = data.tel_enterprise
 }
 
+const notifyError = (text) => {  
+  toast.error(text, {
+    position: toast.POSITION.BOTTOM_CENTER,
+    transition: toast.TRANSITIONS.BOUNCE,
+  });
+}
+
+const notifyInfo = (text) => {  
+  toast.success(text, {
+    position: toast.POSITION.BOTTOM_CENTER,
+    transition: toast.TRANSITIONS.BOUNCE,
+  });
+}
+
 loading.value = false
 
 async function updateProfile() {
@@ -46,6 +63,7 @@ async function updateProfile() {
     loading.value = true
     const user = useSupabaseUser()
 
+    console.log(mail_enterprise.value)
     const updates = {
       id: user.value.id,
       username: username.value,
@@ -62,11 +80,12 @@ async function updateProfile() {
       tel_enterprise: tel_enterprise.value,
     }
 
-    let { error } = await supabase.from('profiles').upsert(updates, {
+    let data = await supabase.from('profiles').upsert(updates, {
       returning: 'minimal', // Don't return the value after inserting
     })
+    data.status != 201 ? notifyError('Un problème est survenue, veuillez verifier vos informations') : notifyInfo('Les modifications ont bien été enregistré')
 
-    if (error) throw error
+    if (data.error) throw error
   } catch (error) {
     alert(error.message)
   } finally {
@@ -95,7 +114,7 @@ async function updateProfile() {
       </div>
       <div class="mb-6">
         <label for="mail_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email enterprise*</label>
-        <input type="mail_enterprise" id="mail_enterprise" :value="mail_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail_enterprise" required>
+        <input type="mail_enterprise" id="mail_enterprise" v-model="mail_enterprise" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="mail_enterprise" required>
       </div>
       <div class="mb-6">
         <label for="siret_enterprise" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Siret enterprise*</label>
