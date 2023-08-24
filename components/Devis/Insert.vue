@@ -1,4 +1,7 @@
 <script setup >
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { BLANK_PDF, generate } from '@pdfme/generator';
 import { Viewer } from '@pdfme/ui';
 
@@ -42,6 +45,20 @@ let sign_1 = ref("")
 let sign_2 = ref("")
 let useTVA = ref(null)
 
+const notifyError = (text) => {  
+  toast.error(text, {
+    position: toast.POSITION.BOTTOM_CENTER,
+    transition: toast.TRANSITIONS.BOUNCE,
+  });
+}
+
+const notifyInfo = (text) => {  
+  toast.success(text, {
+    position: toast.POSITION.TOP_CENTER,
+    transition: toast.TRANSITIONS.BOUNCE,
+  });
+}
+
 async function getSetting() {
   let { data } = await supabase.from('settingdevis').select('*').eq('user', user.value.id)
   console.log(data)
@@ -59,7 +76,6 @@ async function getSetting() {
     useTVA.value = data[0].useTVA
   }
 }
-
 
 const template = 
 {
@@ -566,54 +582,57 @@ async function previewDevis() {
       owner: user.value.id
     },
   ])
-  let result = data
-  inputs = [{}]
-  generateSchemaInputs(prestations_devis.value)
-  inputs.forEach(elt => {
-    elt.logo = getBase64Image(document.getElementById('logo'))
-    elt.siret_enterprise = "Siret : " + infoUser.value.siret_enterprise,
-    elt.name_enterprise = infoUser.value.name_enterprise,
-    elt.adress_enterprise = infoUser.value.adress_enterprise,
-    elt.cp_city_enterprise = infoUser.value.cp_enterprise + ", " + infoUser.value.city_enterprise,
-    elt.tel_enterprise = infoUser.value.tel_enterprise,
-    elt.mail_enterprise = infoUser.value.mail_enterprise,
-    elt.number = JSON.stringify(numberDevis.value)
-    elt.name_client = full_name_client.value
-    elt.adress_client = adress_client.value
-    elt.cp_city_client = cp_client.value+', '+city_client.value
-    elt.tel_client = tel_client.value
-    elt.mail_client = mail_client.value
-  });
-  total_2.value = (total_2.value == 0 ? '' : JSON.stringify(total_2.value)+ '%')
-  let source = {
-    total_1 : JSON.stringify(total_ttc.value)+' €',
-    total_3 : JSON.stringify(total_ttc.value)+' €',
-    total_2 : total_2.value,
-    label_total_1 : label_total_1.value,
-    label_total_2 : label_total_2.value,
-    label_total_3 : label_total_3.value,
-    label_total_4 : label_total_4.value,
-    text_bottom_left_1 : text_bottom_left_1.value,
-    text_bottom_left_2 : text_bottom_left_2.value,
-    text_bottom_left_3 : text_bottom_left_3.value,
-    sign_1 : sign_1.value,
-    sign_2 : sign_2.value
+  if (!error) {
+    notifyInfo('Le devis a été automatiquement enregistré')
+    inputs = [{}]
+    generateSchemaInputs(prestations_devis.value)
+    inputs.forEach(elt => {
+      elt.logo = getBase64Image(document.getElementById('logo'))
+      elt.siret_enterprise = "Siret : " + infoUser.value.siret_enterprise,
+      elt.name_enterprise = infoUser.value.name_enterprise,
+      elt.adress_enterprise = infoUser.value.adress_enterprise,
+      elt.cp_city_enterprise = infoUser.value.cp_enterprise + ", " + infoUser.value.city_enterprise,
+      elt.tel_enterprise = infoUser.value.tel_enterprise,
+      elt.mail_enterprise = infoUser.value.mail_enterprise,
+      elt.number = JSON.stringify(numberDevis.value)
+      elt.name_client = full_name_client.value
+      elt.adress_client = adress_client.value
+      elt.cp_city_client = cp_client.value+', '+city_client.value
+      elt.tel_client = tel_client.value
+      elt.mail_client = mail_client.value
+    });
+    total_2.value = (total_2.value == 0 ? '' : JSON.stringify(total_2.value)+ '%')
+    let source = {
+      total_1 : JSON.stringify(total_ttc.value)+' €',
+      total_3 : JSON.stringify(total_ttc.value)+' €',
+      total_2 : total_2.value,
+      label_total_1 : label_total_1.value,
+      label_total_2 : label_total_2.value,
+      label_total_3 : label_total_3.value,
+      label_total_4 : label_total_4.value,
+      text_bottom_left_1 : text_bottom_left_1.value,
+      text_bottom_left_2 : text_bottom_left_2.value,
+      text_bottom_left_3 : text_bottom_left_3.value,
+      sign_1 : sign_1.value,
+      sign_2 : sign_2.value
+    }
+    Object.assign(inputs[inputs.length-1],source)
+    formulaire.value = false
+    const domContainer = document.getElementById('container');
+    const viewer = new Viewer({ domContainer, template, inputs });
+  
+    /*generate({ template, inputs }).then((pdf) => {
+      // Browser
+      const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
+      window.open(URL.createObjectURL(blob));
+  
+      // Node.js
+      // fs.writeFileSync(path.join(__dirname, `test.pdf`), pdf);
+    })*/
+  } else {
+    notifyError('Veuillez remplir les champs manquants')
   }
-  console.log(inputs)
-  console.log(inputs[inputs.length-1])
-  Object.assign(inputs[inputs.length-1],source)
-  formulaire.value = false
-  const domContainer = document.getElementById('container');
-  const viewer = new Viewer({ domContainer, template, inputs });
 
-  /*generate({ template, inputs }).then((pdf) => {
-    // Browser
-    const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
-    window.open(URL.createObjectURL(blob));
-
-    // Node.js
-    // fs.writeFileSync(path.join(__dirname, `test.pdf`), pdf);
-  })*/
 }
 
 const downloadImage = async () => {
@@ -634,7 +653,6 @@ function getBase64Image(img) {
   var ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0);
   var dataURL = canvas.toDataURL("image/jpeg");
-  console.log(dataURL)
   return dataURL
 }
 
@@ -709,7 +727,10 @@ onMounted(() => {
         <input v-model="mail_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="mail" type="text" placeholder="mail">
       </div>
       <DevisCreateWithPresta @totalttc="(n)=>total_ttc = n" @presta="(n)=>prestations_devis = n"/>
-      <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="previewDevis">Générer le devis</button>
+      <div class="Toastify"></div>
+      <div class="flex justify-between space-x-3">
+        <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="previewDevis">Générer le devis</button>
+      </div>
     </div>
     <div v-if="!formulaire" class="flex justify-between">
       <button @click="formulaire = true" class="text-white p-3 bg-blue-400 rounded-lg">Modifier le PDF</button>

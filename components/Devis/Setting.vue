@@ -116,40 +116,40 @@ watch(useTVA, (newValue, oldValue) => {
         <p class="italic text-xs text-blue-400">cliquez pour modifier</p>
       </div>
       <div class="bg-green-400 col-span-4">
-        <input type="text" class="w-full p-1" v-model="text_bottom_left_1">
+        <input type="text" class="w-full p-1 border" v-model="text_bottom_left_1">
       </div>
       <div class="bg-blue-400">
-        <input type="text" class="w-full p-1" v-model="label_total_1">
+        <input type="text" class="w-full p-1 border" v-model="label_total_1">
       </div>
       <div class="bg-blue-400">
-        <input type="text" class="w-full p-1" disabled v-model="total_1">
+        <input type="text" class="w-full p-1 border" disabled v-model="total_1">
       </div>
       <div class="bg-green-400 col-span-4">
-        <input type="text" class="w-full p-1" v-model="text_bottom_left_2">
+        <input type="text" class="w-full p-1 border" v-model="text_bottom_left_2">
       </div>
       <div class="bg-blue-400">
-        <input type="text" class="w-full p-1" :disabled="!useTVA" v-model="label_total_2">
+        <input type="text" class="w-full p-1 border" :disabled="!useTVA" v-model="label_total_2">
       </div>
       <div class="bg-blue-400">
-        <input type="text" class="w-full p-1" :disabled="!useTVA" v-model="total_2">
+        <input type="text" class="w-full p-1 border" :disabled="!useTVA" v-model="total_2">
       </div>
       <div class="bg-green-400 col-span-4">
-        <input type="text" class="w-full p-1" v-model="text_bottom_left_3">
+        <input type="text" class="w-full p-1 border" v-model="text_bottom_left_3">
       </div>
       <div class="bg-blue-400">
-        <input type="text" class="w-full p-1" v-model="label_total_3">
+        <input type="text" class="w-full p-1 border" v-model="label_total_3">
       </div>
       <div class="bg-blue-400">
-        <input type="text" class="w-full p-1" disabled v-model="total_3">
+        <input type="text" class="w-full p-1 border" disabled v-model="total_3">
       </div>
       <div class="bg-blue-400 col-span-2">
-        <input type="text" class="w-full p-1" v-model="sign_1" placeholder="Pour l'entreprise">
+        <input type="text" class="w-full p-1 border" v-model="sign_1" placeholder="Pour l'entreprise">
       </div>
       <div class="bg-white col-span-2">
-        <input type="text" class="w-full p-1" v-model="sign_2" placeholder="Pour le client">
+        <input type="text" class="w-full p-1 border" v-model="sign_2" placeholder="Pour le client">
       </div>
       <div class="bg-red-400 col-span-2">
-        <input type="text" class="w-full p-1" v-model="label_total_4" placeholder="TVA non Applicable article 293B du CGI">
+        <input type="text" class="w-full p-1 border" v-model="label_total_4" placeholder="TVA non Applicable article 293B du CGI">
       </div>
     </div>
     <div class="flex justify-end">

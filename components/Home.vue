@@ -10,11 +10,11 @@ const titlePage = ref('')
 <template>
   <div class="p-3">
     <div v-if="!menu" class="flex flex-col items-center justify-around space-y-10">
-      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center" @click="titlePage='Nouveau Devis', menu = 'newdevis'">Nouveau Devis</div>
-      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center" @click="titlePage='Mes Prestations', menu = 'newprestas'">Mes Prestations</div>
-      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center" @click="titlePage='Mes Devis', menu = 'listdevis'">Mes Devis</div>
-      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center" @click="titlePage='Parametres Devis', menu = 'setting'">Parametres Devis</div>
-      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center" @click="titlePage='Mon compte', menu = 'myaccount'">Mon compte</div>
+      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Nouveau Devis', menu = 'newdevis'">Nouveau Devis</div>
+      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mes Prestations', menu = 'newprestas'">Mes Prestations</div>
+      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mes Devis', menu = 'listdevis'">Mes Devis</div>
+      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Parametres Devis', menu = 'setting'">Parametres Devis</div>
+      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mon compte', menu = 'myaccount'">Mon compte</div>
       <!--
         <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center line-through" @click="menu = 'newinvoice'">Nouvelle Facture</div>
         <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center line-through" @click="menu = 'listinvoices'">Mes Facture</div>
