@@ -3,7 +3,6 @@ const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 
 const devis = ref([])
-const devisDelete = ref(false)
 
 
 async function getDevis() {
@@ -13,7 +12,6 @@ async function getDevis() {
 
 async function deleteDevis(item) {
 	const { error } = await supabase.from('devis').delete().eq('id', item.id)
-	console.log(error)
 	if (!error) {
 		devis.value.splice(devis.value.indexOf(item), 1)
 	}

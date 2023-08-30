@@ -637,6 +637,52 @@ async function previewDevis() {
 
 }
 
+async function downloadDevis() {
+    inputs = [{}]
+    generateSchemaInputs(prestations_devis.value)
+    inputs.forEach(elt => {
+      elt.logo = getBase64Image(document.getElementById('logo'))
+      elt.siret_enterprise = "Siret : " + infoUser.value.siret_enterprise,
+      elt.name_enterprise = infoUser.value.name_enterprise,
+      elt.adress_enterprise = infoUser.value.adress_enterprise,
+      elt.cp_city_enterprise = infoUser.value.cp_enterprise + ", " + infoUser.value.city_enterprise,
+      elt.tel_enterprise = infoUser.value.tel_enterprise,
+      elt.mail_enterprise = infoUser.value.mail_enterprise,
+      elt.number = JSON.stringify(numberDevis.value)
+      elt.name_client = full_name_client.value
+      elt.adress_client = adress_client.value
+      elt.cp_city_client = cp_client.value+', '+city_client.value
+      elt.tel_client = tel_client.value
+      elt.mail_client = mail_client.value
+    });
+    total_2.value = (total_2.value == 0 ? '' : JSON.stringify(total_2.value)+ '%')
+    let source = {
+      total_1 : JSON.stringify(total_ttc.value)+' €',
+      total_3 : JSON.stringify(total_ttc.value)+' €',
+      total_2 : total_2.value,
+      label_total_1 : label_total_1.value,
+      label_total_2 : label_total_2.value,
+      label_total_3 : label_total_3.value,
+      label_total_4 : label_total_4.value,
+      text_bottom_left_1 : text_bottom_left_1.value,
+      text_bottom_left_2 : text_bottom_left_2.value,
+      text_bottom_left_3 : text_bottom_left_3.value,
+      sign_1 : sign_1.value,
+      sign_2 : sign_2.value
+    }
+    Object.assign(inputs[inputs.length-1],source)
+    generate({ template, inputs }).then((pdf) => {
+      const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
+
+      // Créer un lien de téléchargement
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'devis_' + numberDevis.value + '.pdf';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    })
+}
+
 const downloadImage = async () => {
   try {
     const { data, error } = await supabase.storage.from('avatars').download(infoUser.value.avatar_url)
@@ -736,7 +782,8 @@ onMounted(() => {
     </div>
     <div v-if="!formulaire" class="flex justify-between">
       <button @click="formulaire = true" class="text-white p-3 bg-blue-500 rounded-lg">Modifier le PDF</button>
-      <button @click="saveDevis" class="text-white p-3 bg-yellow-500 rounded-lg">Enregistrer pour plus tard</button>
+      <button @click="saveDevis" class="text-white p-3 bg-yellow-500 rounded-lg">Sauvegarder</button>
+      <button @click="downloadDevis" class="text-gray-700 p-3 bg-white rounded-lg">Télécharger</button>
       <button @click="sendDevis" class="text-white p-3 bg-green-500 rounded-lg">Signer & Envoyer</button>
     </div>
     <div v-show="!formulaire" id="container" style="width: 100%;height: 66vh;"></div>

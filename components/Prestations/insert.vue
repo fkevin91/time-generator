@@ -1,18 +1,30 @@
 <script setup >
-import { BLANK_PDF, generate } from '@pdfme/generator';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 
 const title = ref('')
 const price = ref('')
 const unit_volum = ref('')
-const avertissement = ref('')
 const prestations = ref([])
 
+const notifyError = (text) => {  
+  toast.error(text, {
+    position: toast.POSITION.BOTTOM_CENTER,
+    transition: toast.TRANSITIONS.BOUNCE,
+  });
+}
+
+const notifyInfo = (text) => {  
+  toast.success(text, {
+    position: toast.POSITION.BOTTOM_CENTER,
+    transition: toast.TRANSITIONS.BOUNCE,
+  });
+}
 
 let addPresta = async function () {
   if (title.value != '' && price.value != '') {
-    avertissement.value = ''
     let prestas = []
     prestas.push({
       user: user.value.id,
@@ -21,20 +33,32 @@ let addPresta = async function () {
       unit_volum: unit_volum.value,
     })
     
-    const { data, error } = await supabase.from('prestations').insert(prestas)
-
-    title.value = ''
-    price.value = ''
-    unit_volum.value = ''
-    getPrestations()
+    const data = await supabase.from('prestations').insert(prestas)
+    if (data.status == 201) {
+      notifyInfo('La prestation à bien été enregistré')
+      title.value = ''
+      price.value = ''
+      unit_volum.value = ''
+      getPrestations()
+    } else {
+      notifyError('Une erreur est survenue, veuillez verifier et recommencer')
+    }
   } else {
-    avertissement.value = 'Veuillez remplir le titre et le prix svp'
+    notifyError('Veuillez remplir le titre et le prix svp')
   }
 }
 
 async function getPrestations() {
   const { data } = await supabase.from('prestations').select('*').eq('user', user.value.id)
   prestations.value = data
+}
+
+async function deletePrestation(item) {
+	const { error } = await supabase.from('prestations').delete().eq('id', item.id)
+	if (!error) {
+		prestations.value.splice(prestations.value.indexOf(item), 1)
+    notifyInfo('La prestation à bien été supprimé')
+	}
 }
 
 onMounted(() => {
@@ -44,19 +68,25 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-3 rounded-lg shadow-xl h-full space-y-3 opacity-90 bg-white">
-    <div class="flex justify-between">
-      <input class="p-1 w-36 border-b-2 shadow-xl" v-model="title" placeholder="titre*" type="text">
-      <input class="p-1 w-16 border-b-2 shadow-xl" v-model="price" placeholder="prix*" type="number">
-      <input class="p-1 w-16 border-b-2 shadow-xl" v-model="unit_volum" placeholder="m2/mL/.." type="text">
-      <button class="p-1 bg-green-500 text-white rounded-lg" @click="addPresta">Ajouter</button>
+  <div class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+		<div class="flex items-center justify-between mb-4">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Liste des prestations</h5>
     </div>
-    <div class="-mt-1">{{ avertissement }}</div>
-    <div class="space-y-2" v-for="item, index in prestations" :key="index">
-      <div class="flex justify-between items-center text-base">
-        <div class="w-32">{{ item.title }}</div>
-        <div class="w-16">{{item.price + '€/' + item.unit_volum }}</div>
+    <div class="rounded-lg shadow-xl h-full space-y-3 opacity-90 bg-white">
+      <div class="flex justify-between space-x-1">
+        <input class="p-1 w-2/4 border shadow-xl" v-model="title" placeholder="titre*" type="text">
+        <input class="p-1 w-1/4 border shadow-xl" v-model="price" placeholder="prix*" type="number">
+        <input class="p-1 w-1/4 border shadow-xl" v-model="unit_volum" placeholder="unité" type="text">
       </div>
+      <button class="w-full p-1 bg-green-500 text-white rounded-lg" @click="addPresta">Ajouter</button>
+    </div>
+    <div class="flow-root">
+          <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+              <li class="py-3 sm:py-4" v-for="item, index in prestations" :key="index">
+                <PrestationsItemInsert :item="item" @supprimer="(n) => deletePrestation(n)"/>
+              </li>
+          </ul>
     </div>
   </div>
+
 </template>
