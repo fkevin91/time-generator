@@ -68,9 +68,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+  <div class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8">
 		<div class="flex items-center justify-between mb-4">
-				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Liste des prestations</h5>
+				<h5 class="text-xl font-bold leading-none text-gray-900 ">Liste des prestations</h5>
     </div>
     <div class="rounded-lg shadow-xl h-full space-y-3 opacity-90 bg-white">
       <div class="flex justify-between space-x-1">
@@ -81,7 +81,7 @@ onMounted(() => {
       <button class="w-full p-1 bg-green-500 text-white rounded-lg" @click="addPresta">Ajouter</button>
     </div>
     <div class="flow-root">
-          <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+          <ul role="list" class="divide-y divide-gray-200 ">
               <li class="py-3 sm:py-4" v-for="item, index in prestations" :key="index">
                 <PrestationsItemInsert :item="item" @supprimer="(n) => deletePrestation(n)"/>
               </li>

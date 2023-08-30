@@ -42,7 +42,7 @@
           {{props.item.title}}
       </div>
       <div class="w-2/6">
-          <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+          <p class="text-sm font-medium text-gray-900 truncate">
             {{props.item.price + '€/' + props.item.unit_volum }}
           </p>
       </div>
