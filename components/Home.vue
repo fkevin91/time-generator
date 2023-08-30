@@ -10,6 +10,7 @@ const titlePage = ref('')
 <template>
   <div class="p-3">
     <div v-if="!menu" class="flex flex-col items-center justify-around space-y-10">
+      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Dash Board', menu = 'dashboard'">Dash Board</div>
       <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Nouveau Devis', menu = 'newdevis'">Nouveau Devis</div>
       <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mes Prestations', menu = 'newprestas'">Mes Prestations</div>
       <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mes Devis', menu = 'listdevis'">Mes Devis</div>
@@ -27,6 +28,7 @@ const titlePage = ref('')
       <p>{{'Retour - ' + titlePage}}</p>
       
     </div>
+    <Dashboard v-if="menu === 'dashboard'" />
     <DevisSetting v-if="menu === 'setting'" />
     <DevisInsert v-if="menu === 'newdevis'" />
     <PrestationsInsert v-if="menu === 'newprestas'" />
