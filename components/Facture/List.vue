@@ -1,0 +1,83 @@
+<script setup>
+const supabase = useSupabaseClient()
+const user = useSupabaseUser()
+
+const facture = ref([])
+const infoUser = ref('')
+const src = ref('')
+const logo = ref('')
+
+let { data } = await supabase
+  .from('profiles')
+  .select(`siret_enterprise, name_enterprise, avatar_url, adress_enterprise, cp_enterprise, city_enterprise, tel_enterprise, mail_enterprise`)
+  .eq('id', user.value.id)
+  .single()
+
+if (data) {
+  infoUser.value = data
+}
+
+const downloadImage = async () => {
+  try {
+    const { data, error } = await supabase.storage.from('avatars').download(infoUser.value.avatar_url)
+    if (error) throw error
+    src.value = URL.createObjectURL(data)
+    console.log(src)
+  } catch (error) {
+    console.error('Error downloading image: ', error.message)
+  }
+}
+
+async function getFacture() {
+  const { data } = await supabase.from('facture').select('*').eq('owner', user.value.id)
+  facture.value = data
+}
+
+async function deleteFacture(item) {
+	const { error } = await supabase.from('facture').delete().eq('id', item.id)
+	if (!error) {
+		facture.value.splice(facture.value.indexOf(item), 1)
+	}
+}
+
+document.getElementById('logo')
+
+function getBase64Image(img) {
+  console.log(img)
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  var dataURL = canvas.toDataURL("image/jpeg");
+  console.log(dataURL)
+  
+  return dataURL
+}
+
+downloadImage()
+onMounted(() => {
+  getFacture()
+})
+watch(src, () => {
+  if (src) {
+    getBase64Image(document.getElementById('logo'))
+  }
+});
+</script>
+
+<template>
+  <div class="relative w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8">
+    <img :src="src" alt="" id="logo" class="hidden" >
+    <div class="flex items-center justify-between mb-4">
+				<h5 class="text-xl font-bold leading-none text-gray-900">Liste des Factures</h5>
+    </div>
+    <div class="flow-root">
+          <ul role="list" class="divide-y divide-gray-200">
+              <li class="py-3 sm:py-4" v-for="item in facture" :key="item.id">
+								<FactureItemList :item="item" :logo="logo" :infoUser="infoUser" @supprimer="(n) => deleteFacture(n)"/>
+              </li>
+          </ul>
+    </div>
+  </div>
+</template>

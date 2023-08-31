@@ -602,31 +602,6 @@ function repartiteurPage(tabPrestaToPdf){
       break
     }
   }
-  /*
-  newtab[0] = tabPrestaToPdf.slice(0,23)
-  tabPrestaToPdf.splice(0,23)
-  if (tabPrestaToPdf.length > 0) {
-    newtab[1] = tabPrestaToPdf.slice(0,23)
-    tabPrestaToPdf.splice(0,23)
-  }
-  if (tabPrestaToPdf.length > 0) {
-    newtab[2] = tabPrestaToPdf.slice(0,23)
-    tabPrestaToPdf.splice(0,23)
-  }
-  if (tabPrestaToPdf.length > 0) {
-    newtab[3] = tabPrestaToPdf.slice(0,23)
-    tabPrestaToPdf.splice(0,23)
-  }
-  if (tabPrestaToPdf.length > 0) {
-    newtab[4] = tabPrestaToPdf.slice(0,23)
-    tabPrestaToPdf.splice(0,23)
-  }
-  if (tabPrestaToPdf.length > 0) {
-    newtab[5] = tabPrestaToPdf.slice(0,23)
-    tabPrestaToPdf.splice(0,23)
-  }
-  */
-
   return newtab
 }
 
@@ -695,8 +670,8 @@ function generateTemplatePresta(index, ordonate, newtab, idx, bgc){
 
 async function sendDevis() {}
 
-async function updateDevis() {
-  const data = await supabase.from('devis').update({ 
+async function updateFacture() {
+  const data = await supabase.from('facture').update({ 
     title: title.value, 
     description: description.value, 
     number: numberDevis.value, 
@@ -711,7 +686,7 @@ async function updateDevis() {
     owner: user.value.id
   }).eq('id', props.item.id)
   .select()
-  data.status != 200 ? notifyError('Veuillez remplir les champs manquants') : notifyInfo('Le devis a bien été modifié')
+  data.status != 200 ? notifyError('Veuillez remplir les champs manquants') : notifyInfo('La facture a bien été modifié')
   return data
 }
 
@@ -734,7 +709,7 @@ async function previewDevis() {
       elt.mail_client = mail_client.value
       //Elements block de la page
       elt.top_bar = top_bar.value,
-      elt.type = type.value,
+      elt.type = "Facture",
       elt.middle_bar = middle_bar.value,
       elt.title_column_description = title_column_description.value,
       elt.title_column_qte = title_column_qte.value,
@@ -781,7 +756,7 @@ async function downloadDevis() {
       elt.tel_client = tel_client.value
       elt.mail_client = mail_client.value
       elt.top_bar = top_bar.value,
-      elt.type = type.value,
+      elt.type = "Facture",
       elt.middle_bar = middle_bar.value,
       elt.title_column_description = title_column_description.value,
       elt.title_column_qte = title_column_qte.value,
@@ -854,7 +829,7 @@ onMounted(() => {
           <label class="block text-gray-700 text-sm font-bold mb-2" for="numberdevis">
             N° de devis
           </label>
-          <input v-model="numberDevis" class="shadow appearance-none border rounded w-28 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="numberdevis" type="number" placeholder="n° devis">
+          <input v-model="numberDevis" class="shadow appearance-none border rounded w-28 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="numberdevis" type="number" placeholder="n° Facture">
         </div>
       </div>
       <div class="mb-4">
@@ -910,7 +885,7 @@ onMounted(() => {
       <DevisCreateWithPresta @totalttc="(n)=>total_ttc = n" :prestation="JSON.parse(props.item.prestations)" @presta="(n)=>prestations_devis = n"/>
       <div class="flex justify-between space-x-3">
         <button class="p-1 italic w-full text-center bg-yellow-500 text-white rounded-lg" @click="updateDevis">Enregistrer pour plus tard</button>
-        <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="previewDevis">Générer le devis</button>
+        <button class="p-1 italic w-full text-center bg-blue-500 text-white rounded-lg" @click="previewDevis">Générer la facture</button>
       </div>
     </div>
     <div v-if="!formulaire" class="flex justify-between">

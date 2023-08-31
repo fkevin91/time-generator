@@ -3,6 +3,8 @@ const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 
 const devis = ref(null)
+const facture = ref(null)
+
 let devisTrie = {
   onhold: [],
   valid: [],
@@ -15,15 +17,30 @@ let devisDashborad = ref({
   denied: {},
   draft: {},
 })
+let factureTrie = {
+  onhold: [],
+  create: [],
+  paid: [],
+}
+let factureDashborad = ref({
+  onhold: {},
+  create: {},
+  paid: {},
+})
 
 async function getDevis() {
   const { data } = await supabase.from('devis').select('total_ttc, status').eq('owner', user.value.id)
   devis.value = data
   triageDevis(devis.value)
 }
+async function getFacture() {
+  const { data } = await supabase.from('facture').select('total_ttc, status').eq('owner', user.value.id)
+  facture.value = data
+  triageFacture(facture.value)
+}
 
-function triageDevis(listDevis) {
-  listDevis.forEach(elt => {
+function triageDevis(list) {
+  list.forEach(elt => {
     elt.status == 'onhold' ? devisTrie.onhold.push(elt) : false
     elt.status == 'valid' ? devisTrie.valid.push(elt) : false
     elt.status == 'denied' ? devisTrie.denied.push(elt) : false
@@ -37,11 +54,26 @@ function triageDevis(listDevis) {
     });
     devisDashborad.value[key] = {total : total, nb : nb}
   }
-  console.log(devisDashborad)
+}
+function triageFacture(list) {
+  list.forEach(elt => {
+    elt.status == 'onhold' ? factureTrie.onhold.push(elt) : false
+    elt.status == 'create' ? factureTrie.create.push(elt) : false
+    elt.status == 'paid' ? factureTrie.paid.push(elt) : false
+  });
+  for (const key in factureTrie) {
+    let total = 0
+    let nb = factureTrie[key].length
+    factureTrie[key].forEach(x => {
+      total += x.total_ttc
+    });
+    factureDashborad.value[key] = {total : total, nb : nb}
+  }
 }
 
 onMounted(() => {
   getDevis()
+  getFacture()
 })
 
 </script>
@@ -76,9 +108,9 @@ onMounted(() => {
         </div>
         <div class="flex justify-between space-x-1">
           <div class="text-center bg-blue-400 w-full p-3">2023</div>
-          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base font-semibold">395 / 20991€</div>
-          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base font-semibold">219 / 15065€</div>
-          <div class="text-center bg-orange-400 w-full p-3 text-xs md:text-base font-semibold">09 / 7037€</div>
+          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base font-semibold">{{ factureDashborad.create.nb + ' / ' + factureDashborad.create.total + '€' }}</div>
+          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base font-semibold">{{ factureDashborad.paid.nb + ' / ' + factureDashborad.paid.total + '€' }}</div>
+          <div class="text-center bg-orange-400 w-full p-3 text-xs md:text-base font-semibold">{{ factureDashborad.onhold.nb + ' / ' + factureDashborad.onhold.total + '€' }}</div>
         </div>
       </div>
     </div>

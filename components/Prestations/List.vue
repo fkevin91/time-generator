@@ -3,7 +3,13 @@
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const emit = defineEmits(['totalttc', 'presta'])
+const props = defineProps(['item'])
+
 const prestations = ref([])
+if (props.item) {
+  console.log(props.item)
+  prestations.value = props.item
+}
 
 let title = ref('')
 let price = ref('')
@@ -71,7 +77,7 @@ watch(totalColumn, () => {
 
 
 onMounted(() => {
-  getPrestations()
+  !props.item ? getPrestations() : false
 })
 </script>
 
@@ -105,7 +111,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="text-end ">
-      {{'Total TTC: ' + totalColumn + '€' }}
+      {{'Total catégorie : ' + totalColumn + '€' }}
     </div>
   </div>
   

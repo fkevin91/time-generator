@@ -2,6 +2,7 @@
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const emit = defineEmits(['totalttc', 'presta'])
+const props = defineProps(['prestation'])
 
 const title = ref('')
 
@@ -11,6 +12,10 @@ let totaux = ref({})
 let prestas = ref({
   general: null,
 })
+
+if (props.prestation) {
+  prestas.value = props.prestation  
+}
 
 function prestaComputed(index, n){
   prestas.value[index] = n
@@ -44,8 +49,12 @@ watch(totalColumn, () => {
   <div class="p-1  space-y-2">
     <div v-for="item, index in prestas" :key="index">
       <p class="font-bold text-lg">{{ index }}</p>
-      <PrestationsList @totalttc="(n)=>totaux[index] = n" @presta="(n)=>prestaComputed(index, n)"/>
+      <PrestationsList @totalttc="(n)=>totaux[index] = n" :item="item" @presta="(n)=>prestaComputed(index, n)"/>
     </div>
+  </div>
+  <div class="flex justify-end pr-2">
+    <div>{{ 'Total : ' + totalColumn + '€' }}</div>
+
   </div>
   <div v-if="!addCat" @click="addCat = true" class="flex space-x-3 p-3 items-center">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

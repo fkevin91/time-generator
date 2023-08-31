@@ -14,6 +14,7 @@ const titlePage = ref('')
       <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Nouveau Devis', menu = 'newdevis'">Nouveau Devis</div>
       <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mes Prestations', menu = 'newprestas'">Mes Prestations</div>
       <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mes Devis', menu = 'listdevis'">Mes Devis</div>
+      <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mes Facture', menu = 'listfacture'">Mes Facture</div>
       <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Parametres Devis', menu = 'setting'">Parametres Devis</div>
       <div class="rounded-lg shadow-xl p-3 bg-slate-200 w-60 text-center cursor-pointer" @click="titlePage='Mon compte', menu = 'myaccount'">Mon compte</div>
       <!--
@@ -32,6 +33,7 @@ const titlePage = ref('')
     <DevisSetting v-if="menu === 'setting'" />
     <DevisInsert v-if="menu === 'newdevis'" />
     <PrestationsInsert v-if="menu === 'newprestas'" />
+    <FactureList v-if="menu === 'listfacture'" />
     <DevisList v-if="menu === 'listdevis'" />
     <Account v-if="menu === 'myaccount'" />
 

@@ -15,7 +15,7 @@ async function signOut() {
 
 <template>
   <div class="h-full min-h-screen background-size" :style="{ backgroundImage: `url(${urlImage})` }">
-    <div class="mb-24">
+    <div class="mb-6">
       <div class="flex justify-between p-8 text-white">
         <div></div>
         <h1 class="text-4xl font-bold">QUOTE GENIUS</h1>
