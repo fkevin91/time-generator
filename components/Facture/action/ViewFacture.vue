@@ -785,7 +785,7 @@ async function downloadDevis() {
       // Créer un lien de téléchargement
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'devis_' + numberDevis.value + '.pdf';
+      a.download = 'facture_' + numberDevis.value + '.pdf';
       a.click();
       URL.revokeObjectURL(a.href);
     })

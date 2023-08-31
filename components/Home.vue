@@ -1,10 +1,6 @@
 <script setup>
-const supabase = useSupabaseClient()
-const user = useSupabaseUser()
-
-const menu = ref('')
-const titlePage = ref('')
-
+  const menu = ref('')
+  const titlePage = ref('')
 </script>
 
 <template>
