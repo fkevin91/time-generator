@@ -1,6 +1,8 @@
 <script setup >
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+const props = defineProps(['item', 'infoUser', 'logo'])
+
 
 import { BLANK_PDF, generate } from '@pdfme/generator';
 import { Viewer } from '@pdfme/ui';
@@ -20,18 +22,24 @@ if (data) {
   infoUser.value = data
 }
 
+for (const key in props.item) {
+  if (!props.item[key]) {
+    props.item[key] = ''
+  }
+}
+
 let inputs
-const title = ref('')
-const description = ref('')
-const numberDevis = ref('')
-const full_name_client = ref('')
-const adress_client = ref('')
-const cp_client = ref('')
-const city_client = ref('')
-const tel_client = ref('')
-const mail_client = ref('')
-const prestations_devis = ref('')
-const total_ttc = ref('')
+const title = ref(props.item.title)
+const description = ref(props.item.description)
+const numberDevis = ref(props.item.number)
+const full_name_client = ref(props.item.full_name_client)
+const adress_client = ref(props.item.adress_client)
+const cp_client = ref(JSON.stringify(props.item.cp_client))
+const city_client = ref(props.item.city_client)
+const tel_client = ref(JSON.stringify(props.item.tel_client))
+const mail_client = ref(props.item.mail_client)
+const prestations_devis = ref(JSON.parse(props.item.prestations))
+const total_ttc = ref(props.item.total_ttc)
 
 let label_total_1 = ref("")
 let label_total_2 = ref("")
@@ -775,14 +783,6 @@ async function downloadDevis() {
       elt.cp_city_client = cp_client.value+', '+city_client.value
       elt.tel_client = tel_client.value
       elt.mail_client = mail_client.value
-      //Elements block de la page
-      elt.top_bar = " ",
-      elt.type = "Devis n°",
-      elt.middle_bar = " ",
-      elt.title_column_description = "Description",
-      elt.title_column_qte = "Qté",
-      elt.title_column_prix_unitaire = "Prix unitaire",
-      elt.title_column_total = "Total H.T"
     });
     total_2.value = (total_2.value == 0 ? '' : JSON.stringify(total_2.value)+ '%')
     let source = {

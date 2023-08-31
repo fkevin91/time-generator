@@ -59,6 +59,6 @@
         </svg>
       </button>
     </div>
-    <DevisActionView v-if="devisPreview" :logo="props.logo" :item="props.item" :infoUser="props.infoUser"/>
+    <DevisActionViewDevis v-if="devisPreview" :logo="props.logo" :item="props.item" :infoUser="props.infoUser"/>
   </div>
 </template>
