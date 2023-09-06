@@ -7,7 +7,6 @@ const props = defineProps(['item'])
 
 const prestations = ref([])
 if (props.item) {
-  console.log(props.item)
   prestations.value = props.item
 }
 
@@ -23,7 +22,6 @@ async function getPrestations() {
     element.total = 0
   });
   prestations.value = data
-  console.log(prestations.value)
 }
 
 let totalRow = function (a) {

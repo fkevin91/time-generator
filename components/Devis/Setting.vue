@@ -2,8 +2,8 @@
 <script setup >
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { notifyError, notifyInfo } from './../../src/Notify/notify';
+
 import imageSrc from 'assets/image/example-setting.jpg'
 
 let label_total_1 = ref("Total HT")
@@ -20,20 +20,6 @@ let sign_1 = ref("Pour l'entreprise")
 let sign_2 = ref("Pour le client")
 let useTVA = ref(false)
 let setting_exist = ref(false)
-
-const notifyError = (text) => {  
-  toast.error(text, {
-    position: toast.POSITION.BOTTOM_CENTER,
-    transition: toast.TRANSITIONS.BOUNCE,
-  });
-}
-
-const notifyInfo = (text) => {  
-  toast.success(text, {
-    position: toast.POSITION.BOTTOM_CENTER,
-    transition: toast.TRANSITIONS.BOUNCE,
-  });
-}
 
 function toggleTVA() {
   useTVA.value = !useTVA.value;

@@ -1,11 +1,10 @@
 
 <script setup>
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { notifyError, notifyInfo } from './../src/Notify/notify';
+
 
 const supabase = useSupabaseClient()
 const { testexample } = await useFetch('/api/hello')
-console.log(testexample)
 const loading = ref(true)
 const username = ref('')
 const name_enterprise = ref('')
@@ -42,20 +41,6 @@ if (data) {
   tel_enterprise.value = data.tel_enterprise
 }
 
-const notifyError = (text) => {  
-  toast.error(text, {
-    position: toast.POSITION.BOTTOM_CENTER,
-    transition: toast.TRANSITIONS.BOUNCE,
-  });
-}
-
-const notifyInfo = (text) => {  
-  toast.success(text, {
-    position: toast.POSITION.BOTTOM_CENTER,
-    transition: toast.TRANSITIONS.BOUNCE,
-  });
-}
-
 loading.value = false
 
 async function updateProfile() {
@@ -63,7 +48,6 @@ async function updateProfile() {
     loading.value = true
     const user = useSupabaseUser()
 
-    console.log(mail_enterprise.value)
     const updates = {
       id: user.value.id,
       username: username.value,

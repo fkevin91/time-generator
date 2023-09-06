@@ -5,7 +5,6 @@
   const emit = defineEmits(['supprimer', 'annuler'])
   const devisDelete = ref(false)
   const devisPreview = ref(false)
-  console.log(props.logo)
 
   async function devisToFacture(item) {
     delete item.id

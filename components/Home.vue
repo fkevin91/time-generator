@@ -1,6 +1,15 @@
 <script setup>
+  import { defineAsyncComponent } from 'vue'
   const menu = ref('')
   const titlePage = ref('')
+
+  const AsyncDashboard = defineAsyncComponent(() => import('./Dashboard.vue'))
+  const AsyncDevisInsert = defineAsyncComponent(() => import('./Devis/Insert.vue'))
+  const AsyncDevisList = defineAsyncComponent(() => import('./Devis/List.vue'))
+  const AsyncDevisSetting = defineAsyncComponent(() => import('./Devis/Setting.vue'))
+  const AsyncPrestationsInsert = defineAsyncComponent(() => import('./Prestations/insert.vue'))
+  const AsyncAccount = defineAsyncComponent(() => import('./Account.vue'))
+  const AsyncFactureList = defineAsyncComponent(() => import('./Facture/List.vue'))
 </script>
 
 <template>
@@ -25,13 +34,13 @@
       <p>{{'Retour - ' + titlePage}}</p>
       
     </div>
-    <Dashboard v-if="menu === 'dashboard'" />
-    <DevisSetting v-if="menu === 'setting'" />
-    <DevisInsert v-if="menu === 'newdevis'" />
-    <PrestationsInsert v-if="menu === 'newprestas'" />
-    <FactureList v-if="menu === 'listfacture'" />
-    <DevisList v-if="menu === 'listdevis'" />
-    <Account v-if="menu === 'myaccount'" />
+    <AsyncDashboard v-if="menu === 'dashboard'" />
+    <AsyncDevisSetting v-if="menu === 'setting'" />
+    <AsyncDevisInsert v-if="menu === 'newdevis'" />
+    <AsyncPrestationsInsert v-if="menu === 'newprestas'" />
+    <AsyncFactureList v-if="menu === 'listfacture'" />
+    <AsyncDevisList v-if="menu === 'listdevis'" />
+    <AsyncAccount v-if="menu === 'myaccount'" />
 
   </div>
 </template>

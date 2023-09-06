@@ -1,6 +1,5 @@
 <script setup >
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { notifyError, notifyInfo } from './../../src/Notify/notify';
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 
@@ -8,20 +7,6 @@ const title = ref('')
 const price = ref('')
 const unit_volum = ref('')
 const prestations = ref([])
-
-const notifyError = (text) => {  
-  toast.error(text, {
-    position: toast.POSITION.BOTTOM_CENTER,
-    transition: toast.TRANSITIONS.BOUNCE,
-  });
-}
-
-const notifyInfo = (text) => {  
-  toast.success(text, {
-    position: toast.POSITION.BOTTOM_CENTER,
-    transition: toast.TRANSITIONS.BOUNCE,
-  });
-}
 
 let addPresta = async function () {
   if (title.value != '' && price.value != '') {

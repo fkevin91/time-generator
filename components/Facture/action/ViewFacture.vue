@@ -77,7 +77,6 @@ const notifyInfo = (text) => {
 
 async function getSetting() {
   let { data } = await supabase.from('settingdevis').select('*').eq('user', user.value.id)
-  console.log(data)
   if (data[0]) {
     label_total_1.value = data[0].label_total_1 
     label_total_2.value = data[0].label_total_2

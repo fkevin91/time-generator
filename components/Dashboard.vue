@@ -80,21 +80,21 @@ onMounted(() => {
 
 <template>
   <div class="space-y-5">
-    <div class="p-3 rounded-lg shadow-xl h-full space-y-3 opacity-90 bg-white">
+    <div class="p-3 rounded-lg shadow-xl space-y-3 opacity-90 bg-white">
       <div class="space-y-1">
         <div class="flex justify-between space-x-1">
           <div class="text-center bg-white w-full p-3">Devis</div>
-          <div class="text-center bg-green-400 w-full p-3 text-xs md:text-base">En attente</div>
-          <div class="text-center bg-green-400 w-full p-3 text-xs md:text-base">Validé</div>
-          <div class="text-center bg-green-400 w-full p-3 text-xs md:text-base">Refusé</div>
-          <div class="text-center bg-green-400 w-full p-3 text-xs md:text-base">Brouillon</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base">En attente</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base">Validé</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base">Refusé</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base">Brouillon</div>
         </div>
         <div class="flex justify-between space-x-1">
-          <div class="text-center bg-green-400 w-full p-3">2023</div>
-          <div class="text-center bg-green-400 w-full p-3 text-xs md:text-base font-semibold">{{ devisDashborad.onhold.nb + ' / ' + devisDashborad.onhold.total + '€' }}</div>
-          <div class="text-center bg-green-400 w-full p-3 text-xs md:text-base font-semibold">{{ devisDashborad.valid.nb + ' / ' + devisDashborad.valid.total + '€' }}</div>
+          <div class="text-center  w-full p-3">2023</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base font-semibold">{{ devisDashborad.onhold.nb + ' / ' + devisDashborad.onhold.total + '€' }}</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base font-semibold">{{ devisDashborad.valid.nb + ' / ' + devisDashborad.valid.total + '€' }}</div>
           <div class="text-center bg-orange-400 w-full p-3 text-xs md:text-base font-semibold">{{ devisDashborad.denied.nb + ' / ' + devisDashborad.denied.total + '€' }}</div>
-          <div class="text-center bg-green-400 w-full p-3 text-xs md:text-base font-semibold">{{ devisDashborad.draft.nb + ' / ' + devisDashborad.draft.total + '€' }}</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base font-semibold">{{ devisDashborad.draft.nb + ' / ' + devisDashborad.draft.total + '€' }}</div>
         </div>
       </div>
     </div>
@@ -102,14 +102,14 @@ onMounted(() => {
       <div class="space-y-1">
         <div class="flex justify-between space-x-1 ite">
           <div class="text-center bg-white w-full p-3">Facture</div>
-          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base">Créé</div>
-          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base">Payé</div>
-          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base">En attente</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base">Créé</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base">Payé</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base">En attente</div>
         </div>
         <div class="flex justify-between space-x-1">
-          <div class="text-center bg-blue-400 w-full p-3">2023</div>
-          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base font-semibold">{{ factureDashborad.create.nb + ' / ' + factureDashborad.create.total + '€' }}</div>
-          <div class="text-center bg-blue-400 w-full p-3 text-xs md:text-base font-semibold">{{ factureDashborad.paid.nb + ' / ' + factureDashborad.paid.total + '€' }}</div>
+          <div class="text-center  w-full p-3">2023</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base font-semibold">{{ factureDashborad.create.nb + ' / ' + factureDashborad.create.total + '€' }}</div>
+          <div class="text-center  w-full p-3 text-xs md:text-base font-semibold">{{ factureDashborad.paid.nb + ' / ' + factureDashborad.paid.total + '€' }}</div>
           <div class="text-center bg-orange-400 w-full p-3 text-xs md:text-base font-semibold">{{ factureDashborad.onhold.nb + ' / ' + factureDashborad.onhold.total + '€' }}</div>
         </div>
       </div>
@@ -137,27 +137,6 @@ onMounted(() => {
           <div class="">Facture</div>
           <div class="">n° 197</div>
           <div class="">Créé</div>
-          <div class="">le 18/09/2023</div>
-          <div class="">En attente</div>
-        </div>
-        <div class="flex justify-between space-x-1 border-b-2">
-          <div class="">Facture</div>
-          <div class="">n° 197</div>
-          <div class="">Envoyé</div>
-          <div class="">le 18/09/2023</div>
-          <div class="">En attente</div>
-        </div>
-        <div class="flex justify-between space-x-1 border-b-2">
-          <div class="">Facture</div>
-          <div class="">n° 197</div>
-          <div class="">Créé</div>
-          <div class="">le 18/09/2023</div>
-          <div class="">En attente</div>
-        </div>
-        <div class="flex justify-between space-x-1 border-b-2">
-          <div class="">Facture</div>
-          <div class="">n° 197</div>
-          <div class="">Envoyé</div>
           <div class="">le 18/09/2023</div>
           <div class="">En attente</div>
         </div>

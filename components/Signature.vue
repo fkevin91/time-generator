@@ -36,7 +36,6 @@ export default {
       const signatureSvg = signaturePad.toDataURL('image/svg+xml')
 
       // Faites ce que vous voulez avec la signature en SVG ici
-      console.log('Signature en SVG:', signatureSvg)
     }
 
     return {
@@ -51,7 +50,7 @@ export default {
 <style>
 #signaturePadContainer {
   border: 1px solid #000;
-  width: 100%;
+  width: 200px;
   height: 200px;
 }
 </style>

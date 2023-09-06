@@ -1,6 +1,5 @@
 <script setup >
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { notifyError, notifyInfo } from './../../src/Notify/notify';
 
 import { BLANK_PDF, generate } from '@pdfme/generator';
 import { Viewer } from '@pdfme/ui';
@@ -45,23 +44,8 @@ let sign_1 = ref("")
 let sign_2 = ref("")
 let useTVA = ref(null)
 
-const notifyError = (text) => {  
-  toast.error(text, {
-    position: toast.POSITION.BOTTOM_CENTER,
-    transition: toast.TRANSITIONS.BOUNCE,
-  });
-}
-
-const notifyInfo = (text) => {  
-  toast.success(text, {
-    position: toast.POSITION.BOTTOM_CENTER,
-    transition: toast.TRANSITIONS.BOUNCE,
-  });
-}
-
 async function getSetting() {
   let { data } = await supabase.from('settingdevis').select('*').eq('user', user.value.id)
-  console.log(data)
   if (data[0]) {
     label_total_1.value = data[0].label_total_1 
     label_total_2.value = data[0].label_total_2

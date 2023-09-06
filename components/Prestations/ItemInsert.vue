@@ -1,6 +1,5 @@
 <script setup>
-  import { toast } from 'vue3-toastify';
-  import 'vue3-toastify/dist/index.css';
+  import { notifyError, notifyInfo } from './../../src/Notify/notify';
   const supabase = useSupabaseClient()
   const props = defineProps(['item'])
   const emit = defineEmits(['supprimer', 'annuler', 'modifier'])
@@ -17,22 +16,6 @@
       .select()
     data.status != 200 ? notifyError('Un problème est survenue, veuillez recommencer') : notifyInfo('Les modifications ont bien été enregistré'), props.item = JSON.parse(JSON.stringify(mutant))
   }
-
-  const notifyError = (text) => {  
-    toast.error(text, {
-      position: toast.POSITION.BOTTOM_CENTER,
-      transition: toast.TRANSITIONS.BOUNCE,
-    });
-  }
-
-  const notifyInfo = (text) => {  
-    toast.success(text, {
-      position: toast.POSITION.BOTTOM_CENTER,
-      transition: toast.TRANSITIONS.BOUNCE,
-    });
-  }
-
-
 </script>
 
 <template>

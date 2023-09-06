@@ -22,7 +22,6 @@ const downloadImage = async () => {
     const { data, error } = await supabase.storage.from('avatars').download(infoUser.value.avatar_url)
     if (error) throw error
     src.value = URL.createObjectURL(data)
-    console.log(src)
   } catch (error) {
     console.error('Error downloading image: ', error.message)
   }
@@ -43,15 +42,12 @@ async function deleteDevis(item) {
 document.getElementById('logo')
 
 function getBase64Image(img) {
-  console.log(img)
   var canvas = document.createElement("canvas");
   canvas.width = img.width;
   canvas.height = img.height;
   var ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0);
-  var dataURL = canvas.toDataURL("image/jpeg");
-  console.log(dataURL)
-  
+  var dataURL = canvas.toDataURL("image/jpeg");  
   return dataURL
 }
 
